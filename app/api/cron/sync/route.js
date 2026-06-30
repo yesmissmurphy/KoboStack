@@ -66,9 +66,9 @@ export async function GET(request) {
         continue;
       }
 
-      const lastChecked = substack.last_checked_at
-        ? new Date(substack.last_checked_at)
-        : new Date(0);
+   const lastChecked = substack.last_checked_at
+  ? new Date(substack.last_checked_at)
+  : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
 
       const newItems = items.filter((item) => item.pubDate > lastChecked);
 
