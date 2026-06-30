@@ -86,9 +86,9 @@ export async function GET(request) {
             date: item.pubDate.toISOString().split("T")[0],
           });
 
-          const datePrefix = item.pubDate.toISOString().split("T")[0];
-          const filename = `${datePrefix}_${sanitizeFilename(item.title)}.epub`;
-          const folder = connection.sync_folder || "/Kobo Books";
+         const dateStr = item.pubDate.toISOString().split("T")[0];
+const filename = `${sanitizeFilename(item.author)} - ${sanitizeFilename(item.title)} - ${dateStr}.epub`;
+         const folder = connection.sync_folder || "/Apps/Rakuten Kobo/Shelf";
 
           await uploadToDropbox(accessToken, folder, filename, epub);
           processed++;
