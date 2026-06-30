@@ -70,7 +70,17 @@ export async function removeSubstack(formData) {
   await supabase.from("substacks").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/dashboard");
 }
+export async function disconnectDropbox() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
+  if (!user) return;
+
+  await supabase.from("dropbox_connections").delete().eq("user_id", user.id);
+  revalidatePath("/dashboard");
+}
 export async function signOut() {
   const supabase = createClient();
   await supabase.auth.signOut();
