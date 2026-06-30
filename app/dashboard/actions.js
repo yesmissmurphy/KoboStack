@@ -41,10 +41,13 @@ export async function addSubstack(formData) {
 
   const hostname = new URL(normalized).hostname.replace(/^www\./, "");
 
+ const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString();
+
   const { error } = await supabase.from("substacks").insert({
     user_id: user.id,
     url: normalized,
     name: hostname,
+    last_checked_at: sevenDaysAgo,
   });
 
   if (error) {
