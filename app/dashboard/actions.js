@@ -74,7 +74,7 @@ export async function removeSubstack(formData) {
   revalidatePath("/dashboard");
 }function normalizeFolderPath(raw) {
   let value = raw.trim();
-  if (!value) return "/Kobo Books";
+if (!value) return "/Apps/Rakuten Kobo/Shelf";
   if (!value.startsWith("/")) value = `/${value}`;
   value = value.replace(/\/+$/, "");
   return value || "/";
