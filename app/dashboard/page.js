@@ -1,5 +1,5 @@
 import { createClient } from "@/utils/supabase/server";
-import { removeSubstack, signOut } from "./actions";
+import { removeSubstack, signOut, disconnectDropbox } from "./actions";
 import AddForm from "./AddForm";
 
 export default async function DashboardPage() {
@@ -12,6 +12,16 @@ export default async function DashboardPage() {
     .from("substacks")
     .select("id, url, name, created_at")
     .order("created_at", { ascending: false });
+
+  const { data: dropboxConnection } = await supabase
+    .from("dropbox_connections")
+    .select("account_id")
+    .maybeSingle();
+
+  const dropboxAuthUrl =
+    `https://www.dropbox.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DROPBOX_APP_KEY}` +
+    `&response_type=code&token_access_type=offline` +
+    `&redirect_uri=${encodeURIComponent(`${process.env.NEXT_PUBLIC_SITE_URL}/api/dropbox/callback`)}`;
 
   return (
     <main className="shell">
@@ -30,6 +40,23 @@ export default async function DashboardPage() {
         Add the Substacks you want tracked. New posts will be converted to EPUB and
         sent to your Kobo automatically once Dropbox sync is connected.
       </p>
+
+      <div className="card" style={{ marginBottom: 24 }}>
+        <div className="field-label" style={{ marginBottom: 12 }}>Dropbox</div>
+        {dropboxConnection ? (
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+            <p style={{ margin: 0 }}>✓ Connected</p>
+            <form action={disconnectDropbox}>
+              <button className="btn btn-ghost" type="submit">Disconnect</button>
+            </form>
+          </div>
+        ) : (
+          <div>
+            <p style={{ marginTop: 0 }}>Not connected yet.</p>
+            <a className="btn" href={dropboxAuthUrl}>Connect Dropbox</a>
+          </div>
+        )}
+      </div>
 
       <div className="card">
         <AddForm />
