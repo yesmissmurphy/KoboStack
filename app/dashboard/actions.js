@@ -69,6 +69,33 @@ export async function removeSubstack(formData) {
 
   await supabase.from("substacks").delete().eq("id", id).eq("user_id", user.id);
   revalidatePath("/dashboard");
+}function normalizeFolderPath(raw) {
+  let value = raw.trim();
+  if (!value) return "/Kobo Books";
+  if (!value.startsWith("/")) value = `/${value}`;
+  value = value.replace(/\/+$/, "");
+  return value || "/";
+}
+
+export async function updateSyncFolder(formData) {
+  const folder = normalizeFolderPath(String(formData.get("folder") || ""));
+
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Your session expired. Please sign in again." };
+
+  const { error } = await supabase
+    .from("dropbox_connections")
+    .update({ sync_folder: folder })
+    .eq("user_id", user.id);
+
+  if (error) return { error: "Couldn't save that folder — please try again." };
+
+  revalidatePath("/dashboard");
+  return { error: null };
 }
 export async function disconnectDropbox() {
   const supabase = createClient();
