@@ -42,7 +42,7 @@ export default function FolderForm({ currentFolder }) {
               setFolder(e.target.value);
               setSaved(false);
             }}
-            placeholder="/Kobo Books"
+           placeholder="/Apps/Rakuten Kobo/Shelf"
           />
         </div>
         <button className="btn btn-ghost" type="submit" disabled={isPending}>
