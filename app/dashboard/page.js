@@ -1,6 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import { removeSubstack, signOut, disconnectDropbox } from "./actions";
 import AddForm from "./AddForm";
+import FolderForm from "./FolderForm";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -15,7 +16,7 @@ export default async function DashboardPage() {
 
   const { data: dropboxConnection } = await supabase
     .from("dropbox_connections")
-    .select("account_id")
+    .select("account_id, sync_folder")
     .maybeSingle();
 
   const dropboxAuthUrl =
@@ -44,11 +45,14 @@ export default async function DashboardPage() {
       <div className="card" style={{ marginBottom: 24 }}>
         <div className="field-label" style={{ marginBottom: 12 }}>Dropbox</div>
         {dropboxConnection ? (
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
-            <p style={{ margin: 0 }}>✓ Connected</p>
-            <form action={disconnectDropbox}>
-              <button className="btn btn-ghost" type="submit">Disconnect</button>
-            </form>
+          <div>
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16 }}>
+              <p style={{ margin: 0 }}>✓ Connected</p>
+              <form action={disconnectDropbox}>
+                <button className="btn btn-ghost" type="submit">Disconnect</button>
+              </form>
+            </div>
+            <FolderForm currentFolder={dropboxConnection.sync_folder || "/Kobo Books"} />
           </div>
         ) : (
           <div>
