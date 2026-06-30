@@ -44,12 +44,13 @@ export async function GET(request) {
     return NextResponse.redirect(`${origin}/login`);
   }
 
-  await supabase.from("dropbox_connections").upsert({
+ await supabase.from("dropbox_connections").upsert({
     user_id: user.id,
     account_id: tokenData.account_id,
     refresh_token: tokenData.refresh_token,
     access_token: tokenData.access_token,
     access_token_expires_at: expiresAt,
+    sync_folder: "/Apps/Rakuten Kobo/Substack",
   });
 
   return NextResponse.redirect(`${origin}/dashboard?dropbox_connected=1`);
