@@ -86,7 +86,7 @@ export default async function DashboardPage() {
           </ul>
         ) : (
           <div className="empty-state">
-            Your shelf is empty. Add a Substack URL above to get started.
+            Your shelf is empty. Add your favourite Substack URLs above to get started.
           </div>
         )}
       </div>
