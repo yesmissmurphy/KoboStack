@@ -31,7 +31,7 @@ export default function LoginPage() {
 
   return (
     <main className="shell">
-      <div className="eyebrow">Shelf — Catalog 01</div>
+      <div className="eyebrow">Stackt — Catalogue 01</div>
       <h1>Sign in to your shelf</h1>
       <p className="lede">
         We'll email you a one-time link. No password to remember, nothing to lose.
