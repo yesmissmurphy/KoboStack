@@ -31,8 +31,9 @@ export default function LoginPage() {
 
   return (
     <main className="shell">
-      <div className="eyebrow">Stackt — Catalogue 01</div>
-      <h1>Sign in to your shelf</h1>
+      <div className="eyebrow"><div className="eyebrow">Get your favourite Substacks delivered to your Kobo automatically</div>
+<h1>Sign in to Stackt</h1></div>
+      <h1>Sign in to Stackt</h1>
       <p className="lede">
         We'll email you a one-time link. No password to remember, nothing to lose.
       </p>
