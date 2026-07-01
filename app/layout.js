@@ -22,8 +22,8 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata = {
-  title: "Shelf — Substacks to Kobo",
-  description: "Track Substacks and send new posts to your Kobo as EPUBs.",
+  title: "Stackt — Substacks to Kobo",
+  description: "Add Substacks and get new posts delivered to your Kobo as EPUBs everyday.",
 };
 
 export default function RootLayout({ children }) {
