@@ -27,7 +27,7 @@ export default async function DashboardPage() {
   return (
     <main className="shell">
       <div className="top-bar">
-        <span className="mark">SHELF</span>
+        <span className="mark">KoStackt</span>
         <form action={signOut}>
           <button className="btn btn-ghost" type="submit" style={{ background: "transparent", color: "var(--paper)", borderColor: "var(--line)" }}>
             Sign out
@@ -36,7 +36,7 @@ export default async function DashboardPage() {
       </div>
 
       <div className="eyebrow">Signed in as {user?.email}</div>
-      <h1>Your shelf</h1>
+      <h1>Your Stackt</h1>
       <p className="lede">
         Add the Substacks you want tracked. New posts will be converted to EPUB and
         sent to your Kobo automatically once Dropbox sync is connected.
