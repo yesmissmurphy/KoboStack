@@ -2,6 +2,7 @@ import { createClient } from "@/utils/supabase/server";
 import { removeSubstack, signOut, disconnectDropbox } from "./actions";
 import AddForm from "./AddForm";
 import FolderForm from "./FolderForm";
+import UpgradeButton from "./UpgradeButton";
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -19,6 +20,14 @@ export default async function DashboardPage() {
     .select("account_id, sync_folder")
     .maybeSingle();
 
+  const { data: billing } = await supabase
+    .from("billing")
+    .select("is_pro")
+    .maybeSingle();
+
+  const isPro = billing?.is_pro || false;
+  const substackCount = substacks?.length || 0;
+
   const dropboxAuthUrl =
     `https://www.dropbox.com/oauth2/authorize?client_id=${process.env.NEXT_PUBLIC_DROPBOX_APP_KEY}` +
     `&response_type=code&token_access_type=offline` +
@@ -27,7 +36,7 @@ export default async function DashboardPage() {
   return (
     <main className="shell">
       <div className="top-bar">
-        <span className="mark">KoStackt</span>
+        <span className="mark">STACKT</span>
         <form action={signOut}>
           <button className="btn btn-ghost" type="submit" style={{ background: "transparent", color: "var(--paper)", borderColor: "var(--line)" }}>
             Sign out
@@ -43,6 +52,20 @@ export default async function DashboardPage() {
       </p>
 
       <div className="card" style={{ marginBottom: 24 }}>
+        <div className="field-label" style={{ marginBottom: 12 }}>Plan</div>
+        {isPro ? (
+          <p style={{ margin: 0 }}>✓ Unlimited — thanks for supporting Stackt!</p>
+        ) : (
+          <div>
+            <p style={{ marginTop: 0 }}>
+              Free plan: {substackCount} / 3 Substacks used.
+            </p>
+            <UpgradeButton />
+          </div>
+        )}
+      </div>
+
+      <div className="card" style={{ marginBottom: 24 }}>
         <div className="field-label" style={{ marginBottom: 12 }}>Dropbox</div>
         {dropboxConnection ? (
           <div>
@@ -52,7 +75,7 @@ export default async function DashboardPage() {
                 <button className="btn btn-ghost" type="submit">Disconnect</button>
               </form>
             </div>
-            <FolderForm currentFolder={dropboxConnection.sync_folder || "/Kobo Books"} />
+            <FolderForm currentFolder={dropboxConnection.sync_folder || "/Apps/Rakuten Kobo/Substack"} />
           </div>
         ) : (
           <div>
@@ -86,7 +109,7 @@ export default async function DashboardPage() {
           </ul>
         ) : (
           <div className="empty-state">
-            Your shelf is empty. Add your favourite Substack URLs above to get started.
+            Your shelf is empty. Add a Substack URL above to get started.
           </div>
         )}
       </div>
