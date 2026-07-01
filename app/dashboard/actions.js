@@ -35,9 +35,33 @@ export async function addSubstack(formData) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) {
+ if (!user) {
     return { error: "Your session expired. Please sign in again." };
   }
+
+  const { data: billing } = await supabase
+    .from("billing")
+    .select("is_pro")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  const isPro = billing?.is_pro || false;
+
+  if (!isPro) {
+    const { count } = await supabase
+      .from("substacks")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", user.id);
+
+    if ((count || 0) >= 3) {
+      return {
+        error: "Free plan is limited to 3 Substacks. Upgrade to add more.",
+        limitReached: true,
+      };
+    }
+  }
+
+  const hostname = new URL(normalized).hostname.replace(/^www\./, "");
 
   const hostname = new URL(normalized).hostname.replace(/^www\./, "");
 
