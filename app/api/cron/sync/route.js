@@ -8,10 +8,10 @@ export const maxDuration = 60;
 
 function sanitizeFilename(str) {
   return str
-    .replace(/[^a-z0-9 \-_.]/gi, "_")
-    .replace(/\s+/g, "_")
+    .replace(/[^a-z0-9 \-_.]/gi, "")
+    .trim()
     .slice(0, 80)
-    .replace(/_+$/, "");
+    .trim();
 }
 
 export async function GET(request) {
