@@ -2,24 +2,32 @@
 
 import { useState } from "react";
 
-export default function UpgradeButton() {
+export default function UpgradeButton({ product, label }) {
   const [loading, setLoading] = useState(false);
 
   async function handleClick() {
     setLoading(true);
-    const res = await fetch("/api/stripe/checkout", { method: "POST" });
-    const data = await res.json();
-    if (data.url) {
-      window.location.href = data.url;
-    } else {
-      setLoading(false);
-      alert("Something went wrong starting checkout. Please try again.");
+    try {
+      const res = await fetch("/api/stripe/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product: product || "unlimited" }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        window.location.href = data.url;
+        return;
+      }
+    } catch (e) {
+      // fall through to the message below
     }
+    setLoading(false);
+    alert("Something went wrong starting checkout. Please try again.");
   }
 
   return (
-    <button className="btn" onClick={handleClick} disabled={loading}>
-      {loading ? "Redirecting…" : "Upgrade — £4.99 one-off"}
+    <button className="btn" type="button" onClick={handleClick} disabled={loading}>
+      {loading ? "Redirecting…" : label || "Upgrade — £4.99 one-off"}
     </button>
   );
 }
