@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { DEFAULT_PREFS, makeStackCache, sendStacksForUser } from "@/lib/stacks";
+import { DEFAULT_PREFS, getEntitlements, makeStackCache, sendStacksForUser } from "@/lib/stacks";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -46,7 +46,8 @@ export async function GET(request) {
     }
 
     try {
-      const n = await sendStacksForUser({ supabase, connection, prefs, dateStr, getStack });
+      const entitlements = await getEntitlements(supabase, row.user_id);
+      const n = await sendStacksForUser({ supabase, connection, prefs, dateStr, getStack, entitlements });
       if (n > 0) {
         sent += n;
         await supabase.from("stack_prefs").update({ last_sent: dateStr }).eq("user_id", row.user_id);
