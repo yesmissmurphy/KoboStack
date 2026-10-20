@@ -11,6 +11,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
 
   const [selected, setSelected] = useState(initial);
   const [emailDelivery, setEmailDelivery] = useState(!!prefs.email_delivery);
+  const [frequency, setFrequency] = useState(String(prefs.frequency || 1));
   const [digest, setDigest] = useState(prefs.digest !== false);
   const [difficulty, setDifficulty] = useState(prefs.sudoku_difficulty || "ramp");
   const [blocked, setBlocked] = useState(null);
@@ -41,6 +42,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
     try {
       fd.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
     if (emailDelivery) fd.set("email_delivery", "on");
+    fd.set("frequency", frequency);
     } catch (e) {
       // no time zone available, the server falls back to UK time
     }
@@ -132,6 +134,20 @@ export default function StacksCard({ stacks, prefs, ent }) {
           </span>
         </div>
       )}
+
+      <div className="stack-toggle">
+        <span>
+          <strong>How often would you like them?</strong>{" "}
+          <select className="stack-select" value={frequency} onChange={(e) => setFrequency(e.target.value)}>
+            <option value="1">Every day</option>
+            <option value="2">Every two days</option>
+            <option value="3">Every three days</option>
+            <option value="7">Once a week</option>
+          </select>
+          <br />
+          Your Substacks always arrive daily.
+        </span>
+      </div>
 
       <label className="stack-toggle">
         <input type="checkbox" checked={emailDelivery} onChange={(e) => setEmailDelivery(e.target.checked)} />
