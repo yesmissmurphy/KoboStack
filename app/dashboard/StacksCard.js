@@ -37,6 +37,11 @@ export default function StacksCard({ stacks, prefs, ent }) {
     const fd = new FormData();
     for (const s of stacks) if (selected[s.key]) fd.set(s.key, "on");
     fd.set("sudoku_difficulty", difficulty);
+    try {
+      fd.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    } catch (e) {
+      // no time zone available, the server falls back to UK time
+    }
     if (digest) fd.set("digest", "on");
     startTransition(async () => {
       setMessage(await saveStackPrefs(null, fd));
@@ -125,13 +130,6 @@ export default function StacksCard({ stacks, prefs, ent }) {
           </span>
         </div>
       )}
-
-      <label className="stack-toggle">
-        <input type="checkbox" checked={digest} onChange={(e) => setDigest(e.target.checked)} />
-        <span>
-          <strong>Bundle into one daily file.</strong> Keeps your Kobo library tidy.
-        </span>
-      </label>
 
       <div className="stacks-actions">
         <button className="btn" type="button" onClick={save} disabled={pending}>
