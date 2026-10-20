@@ -48,13 +48,18 @@ export default function PrivacyPage() {
             and the customer reference Stripe gives us. We never see or store
             your card details.
           </li>
+          <li>
+            <strong>Your Daily Stacks choices.</strong> Which optional daily extras
+            you have switched on, and your sudoku difficulty, so we can send you
+            the right ones.
+          </li>
         </ul>
 
         <h2>The EPUB files</h2>
         <p>
           We fetch the public posts from the Substacks you add, convert them to
           EPUB and save them into your Dropbox. We do not keep a copy of the
-          posts or the EPUB files ourselves.
+          posts or the EPUB files ourselves. The optional daily extras are made from public sources, and nothing about you is sent to them.
         </p>
 
         <h2>Who handles your data</h2>
