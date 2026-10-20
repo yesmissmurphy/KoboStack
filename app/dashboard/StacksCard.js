@@ -124,34 +124,34 @@ export default function StacksCard({ stacks, prefs, ent }) {
         {groups.filter((g) => g[1].length).map((g) => (
           <div key={g[0]} style={{ marginBottom: 14 }}>
             <div className="field-label" style={{ margin: "16px 0 10px" }}>{g[0]}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 14 }}>
             {g[1].map((s) => {
               const on = !!selected[s.key];
               const entitled = isEntitled(s, ent);
               const locked = !entitled && !on && tasterUsed;
               const b = badge(s);
               return (
-                <label key={s.key} title={s.blurb} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", marginBottom: 10, borderRadius: 12, border: on ? "2px solid rgba(150,110,35,0.9)" : "1.5px solid rgba(150,110,35,0.5)", background: on ? "rgba(150,110,35,0.14)" : "rgba(255,252,244,0.6)", boxShadow: on ? "0 3px 0 rgba(150,110,35,0.45), 0 6px 14px rgba(60,40,10,0.16)" : "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)", opacity: locked ? 0.6 : 1, cursor: "pointer" }}>
-                  <input type="checkbox" checked={on} onChange={() => toggle(s)} />
-                  <span style={{ fontSize: 22 }}>{locked ? "🔒" : s.emoji}</span>
-                  <span style={{ flex: 1, minWidth: 0 }}>
-                    <strong>{s.label}</strong>
-                    <span style={{ display: "block", fontSize: 13, opacity: 0.75 }}>{s.tagline}</span>
-                    {on && (
-                      <span style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8, alignItems: "center" }}>
-                        {DAY_CHIPS.map((d) => {
-                          const active = (freqs[s.key] || ALL_DAYS).includes(d[0]);
-                          return (
-                            <button key={d[0]} type="button" title={d[2]} aria-pressed={active} onClick={(e) => { e.preventDefault(); toggleDay(s.key, d[0]); }} style={{ width: 30, height: 30, padding: 0, borderRadius: 8, border: "1.5px solid rgba(150,110,35,0.6)", background: active ? "#17302a" : "transparent", color: active ? "#fbf4e4" : "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{d[1]}</button>
-                          );
-                        })}
-                        <span style={{ fontSize: 12, opacity: 0.7, marginLeft: 4 }}>{(freqs[s.key] || ALL_DAYS).length === 7 ? "every day" : ""}</span>
-                      </span>
-                    )}
-                  </span>
+                <label key={s.key} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 6, position: "relative", padding: "16px 16px 14px", minHeight: 190, borderRadius: 14, border: on ? "2px solid rgba(150,110,35,0.9)" : "1.5px solid rgba(150,110,35,0.5)", background: on ? "rgba(150,110,35,0.14)" : "rgba(255,252,244,0.7)", boxShadow: on ? "0 3px 0 rgba(150,110,35,0.45), 0 6px 14px rgba(60,40,10,0.16)" : "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)", opacity: locked ? 0.6 : 1, cursor: "pointer" }}>
+                  <input type="checkbox" checked={on} onChange={() => toggle(s)} style={{ position: "absolute", top: 12, right: 12 }} />
+                  <span style={{ fontSize: 34, lineHeight: 1 }}>{locked ? "🔒" : s.emoji}</span>
+                  <strong style={{ fontSize: 17 }}>{s.label}</strong>
+                  <span style={{ fontSize: 13, fontStyle: "italic", opacity: 0.8 }}>{s.tagline}</span>
+                  <span style={{ fontSize: 13, opacity: 0.75, flex: 1 }}>{s.blurb}</span>
+                  {on && (
+                    <span style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
+                      {DAY_CHIPS.map((d) => {
+                        const active = (freqs[s.key] || ALL_DAYS).includes(d[0]);
+                        return (
+                          <button key={d[0]} type="button" title={d[2]} aria-pressed={active} onClick={(e) => { e.preventDefault(); toggleDay(s.key, d[0]); }} style={{ width: 30, height: 30, padding: 0, borderRadius: 8, border: "1.5px solid rgba(150,110,35,0.6)", background: active ? "#17302a" : "transparent", color: active ? "#fbf4e4" : "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{d[1]}</button>
+                        );
+                      })}
+                    </span>
+                  )}
                   <span style={{ fontSize: 12, whiteSpace: "nowrap", fontWeight: b.open ? 700 : 400, padding: "3px 9px", borderRadius: 999, border: "1px solid rgba(150,110,35,0.5)" }}>{b.text}</span>
                 </label>
               );
             })}
+            </div>
           </div>
         ))}
       </div>
