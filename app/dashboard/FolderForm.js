@@ -30,26 +30,8 @@ export default function FolderForm({ currentFolder, autoDelete }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
-      <label className="field-label" htmlFor="folder">
-        Dropbox folder for your books
-      </label>
-      <div className="form-row">
-        <div>
-          <input
-            id="folder"
-            type="text"
-            value={folder}
-            onChange={(e) => {
-              setFolder(e.target.value);
-              setSaved(false);
-            }}
-           placeholder="/Apps/Rakuten Kobo/Shelf"
-          />
-        </div>
-        <button className="btn btn-ghost" type="submit" disabled={isPending}>
-          {isPending ? "Saving…" : "Save"}
-        </button>
-      </div>
+      <div className="field-label">Dropbox folder</div>
+      <p style={{ margin: "4px 0 0" }}>Your books arrive in <strong>Apps / Rakuten Kobo / Stackt</strong>. It is the same for everyone, so your Kobo finds it on its own.</p>
       <label style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 14, fontSize: 14, cursor: "pointer" }}>
   <input
     type="checkbox"
