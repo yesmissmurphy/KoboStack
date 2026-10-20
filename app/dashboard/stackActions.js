@@ -3,7 +3,8 @@
 import { createClient } from "@/utils/supabase/server";
 import { createClient as createServiceClient } from "@supabase/supabase-js";
 import { revalidatePath } from "next/cache";
-import { DEFAULT_PREFS, STACKS, makeStackCache, sendStacksForUser } from "@/lib/stacks";
+import { DEFAULT_PREFS, STACKS, getEntitlements, makeStackCache, sendStacksForUser } from "@/lib/stacks";
+import { allowedKeys } from "@/lib/stacks/catalog";
 
 const DIFFICULTIES = ["ramp", "easy", "medium", "hard"];
 
@@ -19,6 +20,12 @@ export async function saveStackPrefs(prevState, formData) {
   const diff = formData.get("sudoku_difficulty");
   row.sudoku_difficulty = DIFFICULTIES.includes(diff) ? diff : "ramp";
   row.digest = formData.get("digest") === "on";
+
+  const chosen = STACKS.filter((s) => row[s.key]).map((s) => s.key);
+  const ent = await getEntitlements(supabase, user.id);
+  if (allowedKeys(chosen, ent).length < chosen.length) {
+    return { error: "That is more than your plan includes. Please unlock them first." };
+  }
 
   const { error } = await supabase.from("stack_prefs").upsert(row, { onConflict: "user_id" });
   if (error) return { error: "Could not save. Please try again." };
@@ -61,6 +68,7 @@ export async function sendStacksNow() {
       prefs: { ...DEFAULT_PREFS, ...row },
       dateStr,
       getStack: makeStackCache(dateStr),
+      entitlements: await getEntitlements(admin, user.id),
     });
     return n > 0
       ? { ok: `Sent ${n} file${n === 1 ? "" : "s"} to your Dropbox.` }
