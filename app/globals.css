@@ -312,3 +312,11 @@ input[type="email"], input[type="url"], input[type="text"] { border-radius: 10px
 /* Cosier fonts */
 .catalog-url { font-family: var(--font-display), Georgia, serif; font-size: 1.15rem; font-weight: 600; letter-spacing: 0.005em; }
 .card strong { font-family: var(--font-display), Georgia, serif; font-weight: 600; }
+
+/* Tiles and writer names */
+.stack-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; }
+@media (max-width: 640px) {
+  .stack-tiles { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .stack-tiles label { padding: 12px !important; min-height: 0 !important; }
+}
+.catalog-url { word-break: normal; overflow-wrap: anywhere; font-size: 1.05rem; min-width: 0; }
