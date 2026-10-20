@@ -117,7 +117,7 @@ export default async function DashboardPage() {
           <div className="field-label" style={{ marginBottom: 12 }}>Substacks</div>
           <h2 style={{ marginBottom: 6 }}>Your little shelf of reading</h2>
           <p style={{ marginTop: 0 }}>
-            Add the writers you love. New posts are turned into books and sent to your Kobo.
+            Add the writers you love. New posts are turned into books and sent to your Kobo daily, automatically.
           </p>
 
           <AddForm />
