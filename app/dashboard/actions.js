@@ -122,6 +122,25 @@ export async function updateSyncFolder(formData) {
   revalidatePath("/dashboard");
   return { error: null };
 }
+export async function setAutoDelete(enabled) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) return { error: "Your session expired. Please sign in again." };
+
+  const { error } = await supabase
+    .from("dropbox_connections")
+    .update({ auto_delete: !!enabled })
+    .eq("user_id", user.id);
+
+  if (error) return { error: "Could not save that, please try again." };
+
+  revalidatePath("/dashboard");
+  return { error: null };
+}
+
 export async function disconnectDropbox() {
   const supabase = createClient();
   const {
