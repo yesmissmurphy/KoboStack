@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { fetchFeed } from "@/lib/rss";
 import { createEpub } from "@/lib/epub";
-import { getValidAccessToken, uploadToDropbox } from "@/lib/dropbox";
+import { getValidAccessToken, uploadToDropbox, deleteOldFiles } from "@/lib/dropbox";
 
 export const dynamic = "force-dynamic";
 export const maxDuration = 60;
@@ -28,7 +28,7 @@ export async function GET(request) {
   const { data: connections } = await supabase
     .from("dropbox_connections")
     .select(
-      "user_id, access_token, refresh_token, access_token_expires_at, sync_folder"
+      "user_id, access_token, refresh_token, access_token_expires_at, sync_folder, auto_delete"
     );
 
   if (!connections?.length) {
@@ -109,12 +109,24 @@ errors++;
     }
   }
 
-  return Response.json({
-    ok: true,
+  // Optional tidy-up: remove Stackt EPUBs older than 30 days for people who ticked the box.
+let cleaned = 0;
+for (const connection of connections) {
+  if (!connection.auto_delete) continue;
+  try {
+    const token = await getValidAccessToken(connection, supabase);
+    cleaned += await deleteOldFiles(token, connection.sync_folder || "/Apps/Rakuten Kobo/Substack", 30);
+  } catch (err) {
+    console.error(`Cleanup failed for user ${connection.user_id}:`, err);
+    errorDetails.push(`cleanup: ${String(err?.message || err).slice(0, 200)}`);
+    errors++;
+  }
+}
+
+return Response.json({ ok: true,
     processed,
     skipped,
     errors,
-errorDetails,
-timestamp: new Date().toISOString(),
+errorDetails, cleaned, timestamp: new Date().toISOString(),
   });
 }
