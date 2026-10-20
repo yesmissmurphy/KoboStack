@@ -5,6 +5,8 @@ import FolderForm from "./FolderForm";
 import UpgradeButton from "./UpgradeButton";
 import StacksCard from "./StacksCard";
 import GetSubstacksButton from "./GetSubstacksButton";
+import PrintablesCard from "./PrintablesCard";
+import { PRINTABLES, PRINTABLE_GROUPS } from "@/lib/printables/generators";
 import { STACKS, DEFAULT_PREFS } from "@/lib/stacks";
 
 export const maxDuration = 60;
@@ -144,6 +146,7 @@ export default async function DashboardPage() {
         </div>
 
         <StacksCard stacks={STACKS} prefs={stackPrefs} ent={entitlements} />
+        <PrintablesCard items={PRINTABLES.map(({ build, ...rest }) => rest)} groups={PRINTABLE_GROUPS} />
       </div>
 
       <p style={{ marginTop: 32, fontSize: 13 }}><a href="/privacy">Privacy policy</a></p>
