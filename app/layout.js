@@ -1,18 +1,9 @@
-import { Lora, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, DM_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 
-const lora = Lora({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
+const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", display: "swap" });
 
-const plexSans = IBM_Plex_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  variable: "--font-body",
-  display: "swap",
-});
+const dmSans = DM_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-body", display: "swap" });
 
 const plexMono = IBM_Plex_Mono({
   subsets: ["latin"],
@@ -28,7 +19,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${lora.variable} ${plexSans.variable} ${plexMono.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${plexMono.variable}`}>
       <body>{children}</body>
     </html>
   );
