@@ -1,4 +1,4 @@
-import { STACKT_FOLDER } from "@/lib/dropbox";
+import { STACKT_FOLDER, SUBSTACKS_FOLDER } from "@/lib/dropbox";
 import { createClient } from "@supabase/supabase-js";
 import { fetchFeed } from "@/lib/rss";
 import { createEpub } from "@/lib/epub";
@@ -96,7 +96,7 @@ continue;
 
          const dateStr = item.pubDate.toISOString().split("T")[0];
 const filename = `${sanitizeFilename(item.author)} - ${sanitizeFilename(item.title)} - ${dateStr}.epub`;
-const folder = STACKT_FOLDER;
+const folder = SUBSTACKS_FOLDER;
           
           await uploadToDropbox(accessToken, folder, filename, epub, force);
           processed++;
@@ -121,6 +121,7 @@ for (const connection of connections) {
   try {
     const token = await getValidAccessToken(connection, supabase);
     cleaned += await deleteOldFiles(token, STACKT_FOLDER, 30);
+      cleaned += await deleteOldFiles(token, SUBSTACKS_FOLDER, 30);
   } catch (err) {
     console.error(`Cleanup failed for user ${connection.user_id}:`, err);
     errorDetails.push(`cleanup: ${String(err?.message || err).slice(0, 200)}`);
