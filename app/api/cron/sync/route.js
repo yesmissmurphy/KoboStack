@@ -16,6 +16,9 @@ function sanitizeFilename(str) {
 }
 
 export async function GET(request) {
+  const { searchParams } = new URL(request.url);
+  const onlyUser = searchParams.get("user");
+  const force = searchParams.get("force") === "1";
   const authHeader = request.headers.get("authorization");
   if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     return Response.json({ error: "Unauthorized" }, { status: 401 });
@@ -26,12 +29,13 @@ export async function GET(request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  const { data: connections } = await supabase
+  let { data: connections } = await supabase
     .from("dropbox_connections")
     .select(
       "user_id, access_token, refresh_token, access_token_expires_at, sync_folder, auto_delete"
     );
 
+  if (onlyUser && connections) connections = connections.filter((c) => c.user_id === onlyUser);
   if (!connections?.length) {
     return Response.json({ message: "No Dropbox connections found" });
   }
@@ -71,7 +75,7 @@ errors++;
       }
 
    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-const lastChecked = new Date(Math.max(substack.last_checked_at ? new Date(substack.last_checked_at).getTime() : 0, weekAgo));
+const lastChecked = force ? new Date(0) : new Date(Math.max(substack.last_checked_at ? new Date(substack.last_checked_at).getTime() : 0, weekAgo));
 
       const newItems = items.filter((item) => item.pubDate > lastChecked).sort((a, b) => b.pubDate - a.pubDate).slice(0, 3);
 
@@ -94,7 +98,7 @@ continue;
 const filename = `${sanitizeFilename(item.author)} - ${sanitizeFilename(item.title)} - ${dateStr}.epub`;
 const folder = STACKT_FOLDER;
           
-          await uploadToDropbox(accessToken, folder, filename, epub);
+          await uploadToDropbox(accessToken, folder, filename, epub, force);
           processed++;
         } catch (err) {
           console.error(`Failed to process "${item.title}":`, err);
