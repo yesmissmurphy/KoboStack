@@ -10,6 +10,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
   for (const s of stacks) initial[s.key] = !!prefs[s.key];
 
   const [selected, setSelected] = useState(initial);
+  const [emailDelivery, setEmailDelivery] = useState(!!prefs.email_delivery);
   const [digest, setDigest] = useState(prefs.digest !== false);
   const [difficulty, setDifficulty] = useState(prefs.sudoku_difficulty || "ramp");
   const [blocked, setBlocked] = useState(null);
@@ -39,6 +40,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
     fd.set("sudoku_difficulty", difficulty);
     try {
       fd.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
+    if (emailDelivery) fd.set("email_delivery", "on");
     } catch (e) {
       // no time zone available, the server falls back to UK time
     }
@@ -130,6 +132,13 @@ export default function StacksCard({ stacks, prefs, ent }) {
           </span>
         </div>
       )}
+
+      <label className="stack-toggle">
+        <input type="checkbox" checked={emailDelivery} onChange={(e) => setEmailDelivery(e.target.checked)} />
+        <span>
+          <strong>Reading on an iPad or phone?</strong> Email my stacks to me each morning as attachments. Tap one, then Share, then Books.
+        </span>
+      </label>
 
       <div className="stacks-actions">
         <button className="btn" type="button" onClick={save} disabled={pending}>
