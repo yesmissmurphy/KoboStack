@@ -245,3 +245,57 @@ a:focus-visible {
 .stack-teaser { margin-top: 40px; }
 .stack-teaser h2 { color: var(--paper); }
 .stack-teaser p { color: var(--paper); }
+
+/* ---- Cosy refresh: warmer paper, softer shapes, crisper type (green kept) ---- */
+:root {
+  --ink: #17302a;
+  --ink-deep: #102620;
+  --paper: #f5ecd7;
+  --paper-dim: #ece0c4;
+  --brass: #c99a40;
+  --rust: #a2603c;
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "DM Sans", -apple-system, sans-serif;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-size: 17px;
+  line-height: 1.6;
+  background-image: radial-gradient(circle at 12% 0%, rgba(201, 154, 64, 0.16), transparent 50%), radial-gradient(circle at 92% 100%, rgba(245, 236, 215, 0.06), transparent 45%);
+}
+
+h1 { font-size: clamp(2.2rem, 5vw, 3.1rem); line-height: 1.08; letter-spacing: -0.01em; font-weight: 600; color: var(--paper); }
+h2 { font-size: 1.55rem; line-height: 1.2; letter-spacing: -0.005em; }
+
+.mark { font-family: var(--font-display); font-size: 1.2rem; font-weight: 600; letter-spacing: 0.24em; }
+.eyebrow, .field-label, .catalog-tag { letter-spacing: 0.14em; }
+.field-label { color: var(--rust); }
+
+.card { border-radius: 20px; padding: 30px; border: 1px solid rgba(201, 154, 64, 0.4); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 16px 36px rgba(0, 0, 0, 0.28); }
+
+input[type="email"], input[type="url"], input[type="text"] { border-radius: 12px; background: #fbf5e6; border: 1px solid rgba(23, 48, 42, 0.22); padding: 13px 16px; }
+input:focus-visible { border-color: var(--brass); }
+
+.btn { border-radius: 999px; padding: 12px 26px; background: var(--ink); letter-spacing: 0.01em; box-shadow: 0 2px 0 rgba(0, 0, 0, 0.14); }
+.btn:hover { background: #24463c; transform: translateY(-1px); }
+.btn-ghost { background: transparent; box-shadow: none; border: 1px solid rgba(23, 48, 42, 0.3); }
+.btn-ghost:hover { background: rgba(23, 48, 42, 0.07); }
+
+.catalog-entry { border-radius: 14px; border-left: 4px solid var(--rust); background: rgba(255, 255, 255, 0.5); }
+.empty-state { border-radius: 16px; }
+
+.stack-tile { border-radius: 16px; }
+.stack-name { font-family: var(--font-display); font-weight: 600; }
+.stack-badge { font-family: var(--font-mono); }
+.stack-select { font-family: var(--font-body); }
+
+@media (max-width: 720px) {
+  .shell { padding: 40px 16px 72px; }
+  .card { padding: 22px; }
+}
