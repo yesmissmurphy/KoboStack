@@ -75,7 +75,7 @@ errors++;
       }
 
    const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
-const lastChecked = force ? new Date(0) : new Date(Math.max(substack.last_checked_at ? new Date(substack.last_checked_at).getTime() : 0, weekAgo));
+const lastChecked = force ? new Date(weekAgo) : new Date(Math.max(substack.last_checked_at ? new Date(substack.last_checked_at).getTime() : 0, weekAgo));
 
       const newItems = items.filter((item) => item.pubDate > lastChecked).sort((a, b) => b.pubDate - a.pubDate).slice(0, 3);
 
