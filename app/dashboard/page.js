@@ -26,7 +26,7 @@ export default async function DashboardPage() {
 
   const { data: billing } = await supabase
     .from("billing")
-    .select("is_pro")
+    .select("is_pro, puzzles_unlocked")
     .maybeSingle();
 
   const { data: stackPrefsRow } = await supabase
@@ -36,6 +36,7 @@ export default async function DashboardPage() {
   const stackPrefs = { ...DEFAULT_PREFS, ...(stackPrefsRow || {}) };
 
   const isPro = billing?.is_pro || false;
+  const entitlements = { pro: !!billing?.is_pro, puzzles: !!billing?.puzzles_unlocked };
   const substackCount = substacks?.length || 0;
 
   const dropboxAuthUrl =
@@ -95,7 +96,7 @@ export default async function DashboardPage() {
         )}
       </div>
 
-      <StacksCard stacks={STACKS} prefs={stackPrefs} />
+      <StacksCard stacks={STACKS} prefs={stackPrefs} ent={entitlements} />
 
       <div className="card">
         <AddForm />
