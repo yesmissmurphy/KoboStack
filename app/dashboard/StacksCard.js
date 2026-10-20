@@ -11,7 +11,12 @@ export default function StacksCard({ stacks, prefs, ent }) {
 
   const [selected, setSelected] = useState(initial);
   const [emailDelivery, setEmailDelivery] = useState(!!prefs.email_delivery);
-  const [frequency, setFrequency] = useState(String(prefs.frequency || 1));
+  const fallbackFreq = String(prefs.frequency || 1);
+  const [freqs, setFreqs] = useState(() => {
+    const o = {};
+    for (const s of stacks) o[s.key] = String((prefs.stack_freq || {})[s.key] || fallbackFreq);
+    return o;
+  });
   const [digest, setDigest] = useState(prefs.digest !== false);
   const [difficulty, setDifficulty] = useState(prefs.sudoku_difficulty || "ramp");
   const [blocked, setBlocked] = useState(null);
@@ -35,6 +40,20 @@ export default function StacksCard({ stacks, prefs, ent }) {
     setSelected(next);
   }
 
+  function toggleAll() {
+    if (stacks.every((s) => selected[s.key])) {
+      setSelected({});
+      setBlocked(null);
+      return;
+    }
+    const next = { ...selected };
+    for (const s of stacks) if (isEntitled(s, ent)) next[s.key] = true;
+    setSelected(next);
+    setMessage(null);
+    const first = stacks.find((s) => !isEntitled(s, ent));
+    setBlocked(first ? first.kind : null);
+  }
+
   function save() {
     const fd = new FormData();
     for (const s of stacks) if (selected[s.key]) fd.set(s.key, "on");
@@ -42,7 +61,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
     try {
       fd.set("timezone", Intl.DateTimeFormat().resolvedOptions().timeZone);
     if (emailDelivery) fd.set("email_delivery", "on");
-    fd.set("frequency", frequency);
+    fd.set("stack_freq", JSON.stringify(freqs));
     } catch (e) {
       // no time zone available, the server falls back to UK time
     }
@@ -91,6 +110,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
       )}
 
       <div>
+        <div style={{ textAlign: "right", marginTop: 6 }}><button type="button" className="btn btn-ghost" onClick={toggleAll}>{stacks.every((s) => selected[s.key]) ? "Clear all" : "Select all"}</button></div>
         {groups.filter((g) => g[1].length).map((g) => (
           <div key={g[0]} style={{ marginBottom: 14 }}>
             <div className="field-label" style={{ margin: "16px 0 10px" }}>{g[0]}</div>
@@ -106,6 +126,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
                   <span style={{ flex: 1, minWidth: 0 }}>
                     <strong>{s.label}</strong>
                     <span style={{ display: "block", fontSize: 13, opacity: 0.75 }}>{s.tagline}</span>
+                    {on && (<select className="stack-select" value={freqs[s.key] || "1"} onChange={(e) => setFreqs({ ...freqs, [s.key]: e.target.value })} style={{ marginTop: 6, fontSize: 13 }}><option value="1">Every day</option><option value="2">Every two days</option><option value="3">Every three days</option><option value="7">Once a week</option></select>)}
                   </span>
                   <span style={{ fontSize: 12, whiteSpace: "nowrap", fontWeight: b.open ? 700 : 400, padding: "3px 9px", borderRadius: 999, border: "1px solid rgba(150,110,35,0.5)" }}>{b.text}</span>
                 </label>
@@ -151,19 +172,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
         </div>
       )}
 
-      <div className="stack-toggle">
-        <span>
-          <strong>How often would you like them?</strong>{" "}
-          <select className="stack-select" value={frequency} onChange={(e) => setFrequency(e.target.value)}>
-            <option value="1">Every day</option>
-            <option value="2">Every two days</option>
-            <option value="3">Every three days</option>
-            <option value="7">Once a week</option>
-          </select>
-          <br />
-          Your Substacks always arrive daily.
-        </span>
-      </div>
+      
 
       <label className="stack-toggle">
         <input type="checkbox" checked={emailDelivery} onChange={(e) => setEmailDelivery(e.target.checked)} />
