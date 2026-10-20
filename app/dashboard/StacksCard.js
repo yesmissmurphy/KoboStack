@@ -11,10 +11,13 @@ export default function StacksCard({ stacks, prefs, ent }) {
 
   const [selected, setSelected] = useState(initial);
   const [emailDelivery, setEmailDelivery] = useState(!!prefs.email_delivery);
-  const fallbackFreq = String(prefs.frequency || 1);
+  const ALL_DAYS = [0, 1, 2, 3, 4, 5, 6];
   const [freqs, setFreqs] = useState(() => {
     const o = {};
-    for (const s of stacks) o[s.key] = String((prefs.stack_freq || {})[s.key] || fallbackFreq);
+    for (const s of stacks) {
+      const v = (prefs.stack_freq || {})[s.key];
+      o[s.key] = Array.isArray(v) && v.length ? v : Number(v) === 7 ? [1] : ALL_DAYS;
+    }
     return o;
   });
   const [digest, setDigest] = useState(prefs.digest !== false);
@@ -38,6 +41,13 @@ export default function StacksCard({ stacks, prefs, ent }) {
     setBlocked(null);
     setMessage(null);
     setSelected(next);
+  }
+
+  const DAY_CHIPS = [[1, "M", "Monday"], [2, "T", "Tuesday"], [3, "W", "Wednesday"], [4, "T", "Thursday"], [5, "F", "Friday"], [6, "S", "Saturday"], [0, "S", "Sunday"]];
+  function toggleDay(key, d) {
+    const cur = freqs[key] || ALL_DAYS;
+    const next = cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d];
+    setFreqs({ ...freqs, [key]: next.length ? next : cur });
   }
 
   function toggleAll() {
@@ -126,7 +136,17 @@ export default function StacksCard({ stacks, prefs, ent }) {
                   <span style={{ flex: 1, minWidth: 0 }}>
                     <strong>{s.label}</strong>
                     <span style={{ display: "block", fontSize: 13, opacity: 0.75 }}>{s.tagline}</span>
-                    {on && (<select className="stack-select" value={freqs[s.key] || "1"} onChange={(e) => setFreqs({ ...freqs, [s.key]: e.target.value })} style={{ marginTop: 6, fontSize: 13 }}><option value="1">Every day</option><option value="2">Every two days</option><option value="3">Every three days</option><option value="7">Once a week</option></select>)}
+                    {on && (
+                      <span style={{ display: "flex", flexWrap: "wrap", gap: 4, marginTop: 8, alignItems: "center" }}>
+                        {DAY_CHIPS.map((d) => {
+                          const active = (freqs[s.key] || ALL_DAYS).includes(d[0]);
+                          return (
+                            <button key={d[0]} type="button" title={d[2]} aria-pressed={active} onClick={(e) => { e.preventDefault(); toggleDay(s.key, d[0]); }} style={{ width: 30, height: 30, padding: 0, borderRadius: 8, border: "1.5px solid rgba(150,110,35,0.6)", background: active ? "#17302a" : "transparent", color: active ? "#fbf4e4" : "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{d[1]}</button>
+                          );
+                        })}
+                        <span style={{ fontSize: 12, opacity: 0.7, marginLeft: 4 }}>{(freqs[s.key] || ALL_DAYS).length === 7 ? "every day" : ""}</span>
+                      </span>
+                    )}
                   </span>
                   <span style={{ fontSize: 12, whiteSpace: "nowrap", fontWeight: b.open ? 700 : 400, padding: "3px 9px", borderRadius: 999, border: "1px solid rgba(150,110,35,0.5)" }}>{b.text}</span>
                 </label>
