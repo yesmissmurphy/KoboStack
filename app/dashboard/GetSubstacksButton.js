@@ -17,7 +17,7 @@ export default function GetSubstacksButton() {
   return (
     <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px dashed #c4ad82" }}>
       <p style={{ marginTop: 0 }}>
-        Your Substacks are sent to your Kobo automatically every day. Want them sooner? Check for new posts now.
+        Your Substacks are sent to your Kobo automatically every day. Want them sooner? This looks back over the past 7 days and sends the latest posts (up to 3 per writer) from your chosen authors now.
       </p>
       <button className="btn" type="button" onClick={run} disabled={pending}>
         {pending ? "Checking..." : "Check for more Substacks"}
