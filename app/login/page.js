@@ -64,6 +64,7 @@ export default function LoginPage() {
           </form>
         )}
       </div>
+        <p style={{ marginTop: 32, fontSize: 13 }}><a href="/privacy">Privacy policy</a></p>
     </main>
   );
 }
