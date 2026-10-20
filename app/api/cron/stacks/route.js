@@ -50,14 +50,19 @@ const localDate = (tz) => {
       .select("user_id, access_token, refresh_token, access_token_expires_at, sync_folder")
       .eq("user_id", row.user_id)
       .maybeSingle();
-    if (!connection) {
+    if (!connection && !row.email_delivery) {
       skipped++;
       continue;
+    }
+    let email = null;
+    if (row.email_delivery) {
+      const { data: ud } = await supabase.auth.admin.getUserById(row.user_id);
+      email = ud?.user?.email || null;
     }
 
     try {
       const entitlements = await getEntitlements(supabase, row.user_id);
-      const n = await sendStacksForUser({ supabase, connection, prefs, dateStr, getStack, entitlements });
+      const n = await sendStacksForUser({ supabase, connection, email, prefs, dateStr, getStack, entitlements });
       if (n > 0) {
         sent += n;
         await supabase.from("stack_prefs").update({ last_sent: dateStr }).eq("user_id", row.user_id);
