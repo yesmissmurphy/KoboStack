@@ -299,3 +299,12 @@ input:focus-visible { border-color: var(--brass); }
   .shell { padding: 40px 16px 72px; }
   .card { padding: 22px; }
 }
+
+/* ---- Softer corners, clear borders, body font ---- */
+body, button, input, select, textarea { font-family: var(--font-body), -apple-system, sans-serif; }
+.card { border-radius: 14px; border: 1.5px solid rgba(150, 110, 35, 0.6); }
+.stack-tile { border-radius: 12px; border: 1.5px solid rgba(150, 110, 35, 0.45); }
+.catalog-entry { border-radius: 10px; border: 1.5px solid rgba(150, 110, 35, 0.4); border-left: 4px solid var(--rust); }
+input[type="email"], input[type="url"], input[type="text"] { border-radius: 10px; border: 1.5px solid rgba(23, 48, 42, 0.4); }
+.btn { border-radius: 10px; border: 1.5px solid var(--ink-deep); }
+.btn-ghost { border: 1.5px solid rgba(23, 48, 42, 0.45); }
