@@ -43,11 +43,12 @@ export default function StacksCard({ stacks, prefs, ent }) {
     setSelected(next);
   }
 
-  const DAY_CHIPS = [[1, "M", "Monday"], [2, "T", "Tuesday"], [3, "W", "Wednesday"], [4, "T", "Thursday"], [5, "F", "Friday"], [6, "S", "Saturday"], [0, "S", "Sunday"]];
-  function toggleDay(key, d) {
-    const cur = freqs[key] || ALL_DAYS;
-    const next = cur.includes(d) ? cur.filter((x) => x !== d) : [...cur, d];
-    setFreqs({ ...freqs, [key]: next.length ? next : cur });
+  const FREQ_LIST = [["all", "Every day", [0, 1, 2, 3, 4, 5, 6]], ["weekdays", "Weekdays", [1, 2, 3, 4, 5]], ["weekends", "Weekends", [0, 6]], ["mon", "Mondays", [1]], ["tue", "Tuesdays", [2]], ["wed", "Wednesdays", [3]], ["thu", "Thursdays", [4]], ["fri", "Fridays", [5]], ["sat", "Saturdays", [6]], ["sun", "Sundays", [0]]];
+  const FREQ_OPTIONS = Object.fromEntries(FREQ_LIST.map((o) => [o[0], o[2]]));
+  function freqKey(days) {
+    const k = [...(days || ALL_DAYS)].sort().join(",");
+    const hit = FREQ_LIST.find((o) => [...o[2]].sort().join(",") === k);
+    return hit ? hit[0] : "custom";
   }
 
   function toggleAll() {
@@ -138,14 +139,10 @@ export default function StacksCard({ stacks, prefs, ent }) {
                   <span style={{ fontSize: 13, fontStyle: "italic", opacity: 0.8 }}>{s.tagline}</span>
                   <span style={{ fontSize: 13, opacity: 0.75, flex: 1 }}>{s.blurb}</span>
                   {on && (
-                    <span style={{ display: "flex", flexWrap: "wrap", gap: 4, alignItems: "center" }}>
-                      {DAY_CHIPS.map((d) => {
-                        const active = (freqs[s.key] || ALL_DAYS).includes(d[0]);
-                        return (
-                          <button key={d[0]} type="button" title={d[2]} aria-pressed={active} onClick={(e) => { e.preventDefault(); toggleDay(s.key, d[0]); }} style={{ width: 30, height: 30, padding: 0, borderRadius: 8, border: "1.5px solid rgba(150,110,35,0.6)", background: active ? "#17302a" : "transparent", color: active ? "#fbf4e4" : "inherit", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>{d[1]}</button>
-                        );
-                      })}
-                    </span>
+                    <select className="stack-select" value={freqKey(freqs[s.key])} onChange={(e) => setFreqs({ ...freqs, [s.key]: FREQ_OPTIONS[e.target.value] || ALL_DAYS })} style={{ fontSize: 13, maxWidth: "100%" }}>
+                      {FREQ_LIST.map((o) => (<option key={o[0]} value={o[0]}>{o[1]}</option>))}
+                      {freqKey(freqs[s.key]) === "custom" && <option value="custom">Your own days</option>}
+                    </select>
                   )}
                   <span style={{ fontSize: 12, whiteSpace: "nowrap", fontWeight: b.open ? 700 : 400, padding: "3px 9px", borderRadius: 999, border: "1px solid rgba(150,110,35,0.5)" }}>{b.text}</span>
                 </label>
