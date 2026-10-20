@@ -17,10 +17,10 @@ export default function GetSubstacksButton() {
   return (
     <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px dashed #c4ad82" }}>
       <p style={{ marginTop: 0 }}>
-        Not seeing your latest posts? Fetch the newest from each of your Substacks right now.
+        Your Substacks are sent to your Kobo automatically every day. Want them sooner? Check for new posts now.
       </p>
       <button className="btn" type="button" onClick={run} disabled={pending}>
-        {pending ? "Fetching..." : "Get my Substacks"}
+        {pending ? "Checking..." : "Check for more Substacks"}
       </button>
       {message?.ok && <p className="stack-msg">{message.ok}</p>}
       {message?.error && <p className="stack-msg error">{message.error}</p>}
