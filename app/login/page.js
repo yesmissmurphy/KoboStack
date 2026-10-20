@@ -70,7 +70,7 @@ export default function LoginPage() {
         <h2>Daily Stacks for your Kobo</h2>
         <p>
           Small rituals that land on your Kobo each morning, on top of your Substacks. Try any one free.
-          Reading stacks come with Unlimited (£4.99, once). Puzzle stacks, made for Kobos you can write
+          Free to use: up to 3 Substacks and one stack to try. Unlimited is £12 a year (under £1 a month) for more Substacks and every reading stack you like. Puzzle stacks, made for Kobos you can write
           on, are a £1 add-on.
         </p>
         <div className="stack-grid">
