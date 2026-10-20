@@ -114,7 +114,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
       </p>
       {!allEntitled && (
         <p className="stack-fineprint" style={{ marginTop: 0 }}>
-          Try one stack free. Reading stacks come with Unlimited (£4.99, once). Puzzle stacks, made for
+          Try one stack free. Free to use: up to 3 Substacks and one stack to try. Unlimited is £12 a year (under £1 a month) for more Substacks and every stack you like. Puzzle stacks, made for
           Kobos you can write on, are a £1 add-on.
         </p>
       )}
@@ -169,7 +169,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
           ) : (
             <>
               <p>
-                Reading stacks come with Unlimited (£4.99, once), which also lifts the 3 Substack limit.
+                Unlimited is £12 a year (under £1 a month) and gives you more than 3 Substacks and every reading stack you like.
                 You can still try one stack of any kind free.
               </p>
               <UpgradeButton />
