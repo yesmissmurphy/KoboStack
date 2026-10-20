@@ -60,9 +60,14 @@ export async function POST(request) {
         process.env.SUPABASE_SERVICE_ROLE_KEY
       );
 
+      const flags =
+        session.metadata?.product === "puzzles"
+          ? { puzzles_unlocked: true }
+          : { is_pro: true };
+
       await supabase.from("billing").upsert({
         user_id: userId,
-        is_pro: true,
+        ...flags,
         stripe_customer_id: customerId || null,
         updated_at: new Date().toISOString(),
       });
