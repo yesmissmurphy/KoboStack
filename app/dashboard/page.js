@@ -3,6 +3,10 @@ import { removeSubstack, signOut, disconnectDropbox } from "./actions";
 import AddForm from "./AddForm";
 import FolderForm from "./FolderForm";
 import UpgradeButton from "./UpgradeButton";
+import StacksCard from "./StacksCard";
+import { STACKS, DEFAULT_PREFS } from "@/lib/stacks";
+
+export const maxDuration = 60;
 
 export default async function DashboardPage() {
   const supabase = createClient();
@@ -24,6 +28,12 @@ export default async function DashboardPage() {
     .from("billing")
     .select("is_pro")
     .maybeSingle();
+
+  const { data: stackPrefsRow } = await supabase
+    .from("stack_prefs")
+    .select("*")
+    .maybeSingle();
+  const stackPrefs = { ...DEFAULT_PREFS, ...(stackPrefsRow || {}) };
 
   const isPro = billing?.is_pro || false;
   const substackCount = substacks?.length || 0;
@@ -84,6 +94,8 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
+
+      <StacksCard stacks={STACKS} prefs={stackPrefs} />
 
       <div className="card">
         <AddForm />
