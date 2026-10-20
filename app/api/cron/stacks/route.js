@@ -39,7 +39,9 @@ const localDate = (tz) => {
   for (const row of allPrefs || []) {
     const dateStr = localDate(row.timezone);
   const getStack = cacheFor(dateStr);
-  if (row.last_sent === dateStr) {
+  const every = Math.max(1, Number(row.frequency) || 1);
+    const gap = row.last_sent ? Math.round((Date.parse(dateStr) - Date.parse(row.last_sent)) / 86400000) : 999;
+    if (row.last_sent === dateStr || gap < every) {
       skipped++;
       continue;
     }
