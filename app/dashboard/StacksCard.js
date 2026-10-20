@@ -66,6 +66,16 @@ export default function StacksCard({ stacks, prefs, ent }) {
     return { text: stack.kind === "puzzle" ? "£1 add-on" : "Unlimited", open: false };
   }
 
+  const GROUPS = [
+    ["Reading", ["wikipedia", "onthisday", "news", "film", "word", "poem", "stoic", "fact"]],
+    ["Everyday extras", ["recipe", "nature", "walk", "journal", "mushroom"]],
+    ["Puzzles", ["sudoku"]],
+  ];
+  const placed = new Set(GROUPS.flatMap((g) => g[1]));
+  const leftover = stacks.filter((s) => !placed.has(s.key)).map((s) => s.key);
+  const groups = GROUPS.map((g) => [g[0], g[1].map((k) => stacks.find((s) => s.key === k)).filter(Boolean)]);
+  if (leftover.length) groups.push(["More", leftover.map((k) => stacks.find((s) => s.key === k))]);
+
   return (
     <div className="card" style={{ marginBottom: 24 }}>
       <div className="field-label" style={{ marginBottom: 12 }}>Daily Stacks</div>
@@ -80,23 +90,29 @@ export default function StacksCard({ stacks, prefs, ent }) {
         </p>
       )}
 
-      <div className="stack-grid">
-        {stacks.map((s) => {
-          const on = !!selected[s.key];
-          const entitled = isEntitled(s, ent);
-          const locked = !entitled && !on && tasterUsed;
-          const b = badge(s);
-          return (
-            <label key={s.key} className={`stack-tile${on ? " on" : ""}${locked ? " locked" : ""}`}>
-              <input type="checkbox" checked={on} onChange={() => toggle(s)} />
-              <span className="stack-emoji">{locked ? "🔒" : s.emoji}</span>
-              <span className="stack-name">{s.label}</span>
-              <span className="stack-tagline">{s.tagline}</span>
-              <span className="stack-blurb">{s.blurb}</span>
-              <span className={`stack-badge${b.open ? " open" : ""}`}>{b.text}</span>
-            </label>
-          );
-        })}
+      <div>
+        {groups.filter((g) => g[1].length).map((g) => (
+          <div key={g[0]} style={{ marginBottom: 14 }}>
+            <div className="field-label" style={{ margin: "16px 0 10px" }}>{g[0]}</div>
+            {g[1].map((s) => {
+              const on = !!selected[s.key];
+              const entitled = isEntitled(s, ent);
+              const locked = !entitled && !on && tasterUsed;
+              const b = badge(s);
+              return (
+                <label key={s.key} title={s.blurb} style={{ display: "flex", alignItems: "center", gap: 12, padding: "11px 14px", marginBottom: 10, borderRadius: 12, border: on ? "2px solid rgba(150,110,35,0.9)" : "1.5px solid rgba(150,110,35,0.5)", background: on ? "rgba(150,110,35,0.14)" : "rgba(255,252,244,0.6)", boxShadow: on ? "0 3px 0 rgba(150,110,35,0.45), 0 6px 14px rgba(60,40,10,0.16)" : "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)", opacity: locked ? 0.6 : 1, cursor: "pointer" }}>
+                  <input type="checkbox" checked={on} onChange={() => toggle(s)} />
+                  <span style={{ fontSize: 22 }}>{locked ? "🔒" : s.emoji}</span>
+                  <span style={{ flex: 1, minWidth: 0 }}>
+                    <strong>{s.label}</strong>
+                    <span style={{ display: "block", fontSize: 13, opacity: 0.75 }}>{s.tagline}</span>
+                  </span>
+                  <span style={{ fontSize: 12, whiteSpace: "nowrap", fontWeight: b.open ? 700 : 400, padding: "3px 9px", borderRadius: 999, border: "1px solid rgba(150,110,35,0.5)" }}>{b.text}</span>
+                </label>
+              );
+            })}
+          </div>
+        ))}
       </div>
 
       {blocked && (
