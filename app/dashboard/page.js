@@ -113,6 +113,7 @@ export default async function DashboardPage() {
           </div>
         )}
       </div>
+          <p style={{ marginTop: 32, fontSize: 13 }}><a href="/privacy">Privacy policy</a></p>
     </main>
   );
 }
