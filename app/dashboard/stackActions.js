@@ -1,0 +1,72 @@
+"use server";
+
+import { createClient } from "@/utils/supabase/server";
+import { createClient as createServiceClient } from "@supabase/supabase-js";
+import { revalidatePath } from "next/cache";
+import { DEFAULT_PREFS, STACKS, makeStackCache, sendStacksForUser } from "@/lib/stacks";
+
+const DIFFICULTIES = ["ramp", "easy", "medium", "hard"];
+
+export async function saveStackPrefs(prevState, formData) {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in again." };
+
+  const row = { user_id: user.id, updated_at: new Date().toISOString() };
+  for (const s of STACKS) row[s.key] = formData.get(s.key) === "on";
+  const diff = formData.get("sudoku_difficulty");
+  row.sudoku_difficulty = DIFFICULTIES.includes(diff) ? diff : "ramp";
+  row.digest = formData.get("digest") === "on";
+
+  const { error } = await supabase.from("stack_prefs").upsert(row, { onConflict: "user_id" });
+  if (error) return { error: "Could not save. Please try again." };
+
+  revalidatePath("/dashboard");
+  return { ok: "Saved." };
+}
+
+export async function sendStacksNow() {
+  const supabase = createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in again." };
+
+  const admin = createServiceClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL,
+    process.env.SUPABASE_SERVICE_ROLE_KEY
+  );
+
+  const { data: row } = await admin
+    .from("stack_prefs")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (!row) return { error: "Save your stacks first." };
+
+  const { data: connection } = await admin
+    .from("dropbox_connections")
+    .select("user_id, access_token, refresh_token, access_token_expires_at, sync_folder")
+    .eq("user_id", user.id)
+    .maybeSingle();
+  if (!connection) return { error: "Connect Dropbox first." };
+
+  const dateStr = new Date().toISOString().split("T")[0];
+  try {
+    const n = await sendStacksForUser({
+      supabase: admin,
+      connection,
+      prefs: { ...DEFAULT_PREFS, ...row },
+      dateStr,
+      getStack: makeStackCache(dateStr),
+    });
+    return n > 0
+      ? { ok: `Sent ${n} file${n === 1 ? "" : "s"} to your Dropbox.` }
+      : { error: "Nothing to send. Turn on at least one stack." };
+  } catch (err) {
+    console.error("sendStacksNow failed:", err);
+    return { error: "Something went wrong sending. Please try again." };
+  }
+}
