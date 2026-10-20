@@ -29,8 +29,9 @@ export async function saveStackPrefs(prevState, formData) {
   }
   const cleanFreq = {};
   for (const s of STACKS) {
-    const n = Number(sf[s.key]);
-    cleanFreq[s.key] = [1, 2, 3, 7].includes(n) ? n : 1;
+    const v = sf[s.key];
+    const days = Array.isArray(v) ? [...new Set(v.map(Number).filter((d) => Number.isInteger(d) && d >= 0 && d <= 6))] : [];
+    cleanFreq[s.key] = days.length ? days : [0, 1, 2, 3, 4, 5, 6];
   }
   row.stack_freq = cleanFreq;
   const tz = formData.get("timezone");
