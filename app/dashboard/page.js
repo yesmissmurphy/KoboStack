@@ -80,7 +80,8 @@ export default async function DashboardPage() {
             <p style={{ margin: 0 }}>✓ Unlimited. Thanks for supporting Stackt!</p>
           ) : (
             <div>
-              <p style={{ marginTop: 0 }}>Free plan: {substackCount} / 3 Substacks used.</p>
+              <p style={{ marginTop: 0 }}>Free plan: {substackCount} / 3 Substacks used, plus one stack to try.</p>
+              <p style={{ marginTop: 0 }}>Want more? <strong>Unlimited is £12 a year</strong> (under £1 a month) for as many Substacks and stacks as you like. Stackt is a small business run by one person, so it really does help.</p>
               <UpgradeButton />
             </div>
           )}
