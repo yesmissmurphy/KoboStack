@@ -31,7 +31,7 @@ export default function FolderForm({ currentFolder, autoDelete }) {
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: 16 }}>
       <div className="field-label">Dropbox folder</div>
-      <p style={{ margin: "4px 0 0" }}>Your books arrive in <strong>Apps / Rakuten Kobo / Stackt</strong>. It is the same for everyone, so your Kobo finds it on its own.</p>
+      <p style={{ margin: "4px 0 0" }}>Your Daily Stacks arrive in <strong>Apps / Rakuten Kobo / Stackt</strong> and your Substacks arrive in <strong>Apps / Rakuten Kobo / Substacks</strong>. They are the same for everyone, so your Kobo finds them on its own.</p>
       <label style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 14, fontSize: 14, cursor: "pointer" }}>
   <input
     type="checkbox"
