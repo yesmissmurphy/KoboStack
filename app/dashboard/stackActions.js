@@ -21,8 +21,18 @@ export async function saveStackPrefs(prevState, formData) {
   row.sudoku_difficulty = DIFFICULTIES.includes(diff) ? diff : "ramp";
   row.digest = formData.get("digest") === "on";
   row.email_delivery = formData.get("email_delivery") === "on";
-  const freq = Number(formData.get("frequency"));
-  row.frequency = [1, 2, 3, 7].includes(freq) ? freq : 1;
+  let sf = {};
+  try {
+    sf = JSON.parse(formData.get("stack_freq") || "{}");
+  } catch (e) {
+    sf = {};
+  }
+  const cleanFreq = {};
+  for (const s of STACKS) {
+    const n = Number(sf[s.key]);
+    cleanFreq[s.key] = [1, 2, 3, 7].includes(n) ? n : 1;
+  }
+  row.stack_freq = cleanFreq;
   const tz = formData.get("timezone");
   if (typeof tz === "string" && tz) {
     try {
@@ -74,7 +84,7 @@ export async function sendStacksNow() {
 
   const dateStr = new Date().toISOString().split("T")[0];
   try {
-    const n = await sendStacksForUser({
+    const n = await sendStacksForUser({ force: true,
       supabase: admin,
       connection,
       email: user.email,
