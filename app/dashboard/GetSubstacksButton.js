@@ -15,8 +15,7 @@ export default function GetSubstacksButton() {
   }
 
   return (
-    <div className="card" style={{ marginBottom: 24 }}>
-      <div className="field-label" style={{ marginBottom: 8 }}>Substacks</div>
+    <div style={{ marginTop: 20, paddingTop: 16, borderTop: "1px dashed #c4ad82" }}>
       <p style={{ marginTop: 0 }}>
         Not seeing your latest posts? Fetch the newest from each of your Substacks right now.
       </p>
