@@ -21,7 +21,7 @@ export default async function DashboardPage() {
 
   const { data: dropboxConnection } = await supabase
     .from("dropbox_connections")
-    .select("account_id, sync_folder")
+    .select("account_id, sync_folder, auto_delete")
     .maybeSingle();
 
   const { data: billing } = await supabase
@@ -86,7 +86,10 @@ export default async function DashboardPage() {
                 <button className="btn btn-ghost" type="submit">Disconnect</button>
               </form>
             </div>
-            <FolderForm currentFolder={dropboxConnection.sync_folder || "/Apps/Rakuten Kobo/Substack"} />
+            <FolderForm
+  currentFolder={dropboxConnection.sync_folder || "/Apps/Rakuten Kobo/Substack"}
+  autoDelete={!!dropboxConnection.auto_delete}
+/>
           </div>
         ) : (
           <div>
