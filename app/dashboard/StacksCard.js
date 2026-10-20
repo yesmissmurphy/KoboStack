@@ -125,7 +125,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
         {groups.filter((g) => g[1].length).map((g) => (
           <div key={g[0]} style={{ marginBottom: 14 }}>
             <div className="field-label" style={{ margin: "16px 0 10px" }}>{g[0]}</div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(210px, 1fr))", gap: 14 }}>
+            <div className="stack-tiles">
             {g[1].map((s) => {
               const on = !!selected[s.key];
               const entitled = isEntitled(s, ent);
@@ -139,7 +139,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
                   <span style={{ fontSize: 13, fontStyle: "italic", opacity: 0.8 }}>{s.tagline}</span>
                   <span style={{ fontSize: 13, opacity: 0.75, flex: 1 }}>{s.blurb}</span>
                   {on && (
-                    <select className="stack-select" value={freqKey(freqs[s.key])} onChange={(e) => setFreqs({ ...freqs, [s.key]: FREQ_OPTIONS[e.target.value] || ALL_DAYS })} style={{ fontSize: 13, maxWidth: "100%" }}>
+                    <select className="stack-select" value={freqKey(freqs[s.key])} onChange={(e) => setFreqs({ ...freqs, [s.key]: FREQ_OPTIONS[e.target.value] || ALL_DAYS })} style={{ fontSize: 13, maxWidth: "100%", margin: 0 }}>
                       {FREQ_LIST.map((o) => (<option key={o[0]} value={o[0]}>{o[1]}</option>))}
                       {freqKey(freqs[s.key]) === "custom" && <option value="custom">Your own days</option>}
                     </select>
