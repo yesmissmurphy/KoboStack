@@ -308,3 +308,7 @@ body, button, input, select, textarea { font-family: var(--font-body), -apple-sy
 input[type="email"], input[type="url"], input[type="text"] { border-radius: 10px; border: 1.5px solid rgba(23, 48, 42, 0.4); }
 .btn { border-radius: 10px; border: 1.5px solid var(--ink-deep); }
 .btn-ghost { border: 1.5px solid rgba(23, 48, 42, 0.45); }
+
+/* Cosier fonts */
+.catalog-url { font-family: var(--font-display), Georgia, serif; font-size: 1.15rem; font-weight: 600; letter-spacing: 0.005em; }
+.card strong { font-family: var(--font-display), Georgia, serif; font-weight: 600; }
