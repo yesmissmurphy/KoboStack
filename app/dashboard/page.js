@@ -122,7 +122,7 @@ export default async function DashboardPage() {
           <AddForm />
 
           {substacks && substacks.length > 0 ? (
-            <ul className="catalog-list" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 12, padding: 0, listStyle: "none" }}>
+            <ul className="catalog-list" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 12, padding: 0, listStyle: "none" }}>
               {substacks.map((entry) => (
                 <li className="catalog-entry" key={entry.id}>
                   <div>
