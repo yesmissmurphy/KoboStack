@@ -20,6 +20,7 @@ export async function saveStackPrefs(prevState, formData) {
   const diff = formData.get("sudoku_difficulty");
   row.sudoku_difficulty = DIFFICULTIES.includes(diff) ? diff : "ramp";
   row.digest = formData.get("digest") === "on";
+  row.email_delivery = formData.get("email_delivery") === "on";
   const tz = formData.get("timezone");
   if (typeof tz === "string" && tz) {
     try {
@@ -67,23 +68,24 @@ export async function sendStacksNow() {
     .select("user_id, access_token, refresh_token, access_token_expires_at, sync_folder")
     .eq("user_id", user.id)
     .maybeSingle();
-  if (!connection) return { error: "Connect Dropbox first." };
+  if (!connection && !row.email_delivery) return { error: "Connect Dropbox or switch on email delivery first." };
 
   const dateStr = new Date().toISOString().split("T")[0];
   try {
     const n = await sendStacksForUser({
       supabase: admin,
       connection,
+      email: user.email,
       prefs: { ...DEFAULT_PREFS, ...row },
       dateStr,
       getStack: makeStackCache(dateStr),
       entitlements: await getEntitlements(admin, user.id),
     });
     return n > 0
-      ? { ok: `Sent ${n} file${n === 1 ? "" : "s"} to your Dropbox.` }
+      ? { ok: `Sent ${n} file${n === 1 ? "" : "s"} to ${connection && row.email_delivery ? "your Dropbox and inbox" : connection ? "your Dropbox" : "your inbox"}.` }
       : { error: "Nothing to send. Turn on at least one stack." };
   } catch (err) {
     console.error("sendStacksNow failed:", err);
-    return { error: "Something went wrong sending. Please try again." };
+    return { error: String(err?.message || "").startsWith("Email: ") ? err.message.replace("Email: ", "") : "Something went wrong sending. Please try again." };
   }
 }
