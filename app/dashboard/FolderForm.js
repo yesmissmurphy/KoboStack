@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { updateSyncFolder } from "./actions";
+import { updateSyncFolder, setAutoDelete } from "./actions";
 
-export default function FolderForm({ currentFolder }) {
+export default function FolderForm({ currentFolder, autoDelete }) {
   const [folder, setFolder] = useState(currentFolder);
   const [error, setError] = useState(null);
   const [saved, setSaved] = useState(false);
+  const [tidy, setTidy] = useState(!!autoDelete);
   const [isPending, startTransition] = useTransition();
 
   function handleSubmit(e) {
@@ -49,7 +50,30 @@ export default function FolderForm({ currentFolder }) {
           {isPending ? "Saving…" : "Save"}
         </button>
       </div>
-      {error && <p className="message error">{error}</p>}
+      <label style={{ display: "flex", gap: 10, alignItems: "flex-start", marginTop: 14, fontSize: 14, cursor: "pointer" }}>
+  <input
+    type="checkbox"
+    checked={tidy}
+    style={{ marginTop: 4 }}
+    onChange={(e) => {
+      const value = e.target.checked;
+      setTidy(value);
+      setError(null);
+      startTransition(async () => {
+        const result = await setAutoDelete(value);
+        if (result?.error) {
+          setTidy(!value);
+          setError(result.error);
+        }
+      });
+    }}
+  />
+  <span>
+    <strong>Tidy up after 30 days.</strong> Deletes Stackt EPUBs from this folder once they are 30 days old.
+    Your own books are left alone.
+  </span>
+</label>
+{error && <p className="message error">{error}</p>}
       {saved && !error && <p className="message">Saved.</p>}
     </form>
   );
