@@ -59,19 +59,22 @@ export default async function DashboardPage() {
       </div>
 
       <div className="eyebrow">Signed in as {user?.email}</div>
-      <h1>Your Stackt</h1>
+      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: 14, marginBottom: 8 }}>
+        <h1 style={{ margin: 0 }}>Your Stackt</h1>
+        <span style={{ background: isPro ? "var(--brass)" : "transparent", color: isPro ? "#17302a" : "var(--paper)", border: "1px solid var(--brass)", borderRadius: 999, padding: "4px 14px", fontSize: 13, letterSpacing: "0.08em", textTransform: "uppercase" }}>{isPro ? "Plan: Unlimited" : "Plan: Free"}</span>
+      </div>
 
-      <div style={{ background: "#f7f0e1", border: "1px dashed #c4ad82", borderRadius: 14, padding: "20px 24px", margin: "8px 0 28px", maxWidth: 760 }}>
+      <div style={{ background: "#f7f0e1", color: "#17302a", border: "1px dashed #c4ad82", borderRadius: 14, padding: "20px 24px", margin: "8px 0 28px", maxWidth: 760 }}>
         <div className="field-label" style={{ marginBottom: 8 }}>A note from Stephanie</div>
         <p style={{ margin: 0, lineHeight: 1.7 }}>
           I’m Stephanie and I designed Stackt for those who are consciously aiming for a more analogue, slower life.
           Sometimes you’re not in the mood for a book. Hopefully these stacks will keep you away from your phone for a
-          little while. I’m always open to suggestions, please email <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>.
+          little while. I’m always open to suggestions for more stacks, please email <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>.
         </p>
       </div>
 
       <div style={{ ...twoCol, marginBottom: 24 }}>
-        <div className="card">
+        <div className="card" style={{ display: isPro ? "none" : "block" }}>
           <div className="field-label" style={{ marginBottom: 12 }}>Plan</div>
           {isPro ? (
             <p style={{ margin: 0 }}>✓ Unlimited. Thanks for supporting Stackt!</p>
