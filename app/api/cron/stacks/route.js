@@ -15,8 +15,16 @@ export async function GET(request) {
     process.env.SUPABASE_SERVICE_ROLE_KEY
   );
 
-  const dateStr = new Date().toISOString().split("T")[0];
-  const getStack = makeStackCache(dateStr);
+  const caches = {};
+const cacheFor = (d) => (caches[d] = caches[d] || makeStackCache(d));
+// Each person gets stacks dated by their own local calendar day, so a new day starts at their midnight.
+const localDate = (tz) => {
+  try {
+    return new Intl.DateTimeFormat("en-CA", { timeZone: tz || "Europe/London" }).format(new Date());
+  } catch (e) {
+    return new Date().toISOString().split("T")[0];
+  }
+};
 
   const { data: allPrefs, error } = await supabase.from("stack_prefs").select("*");
   if (error) {
@@ -29,7 +37,9 @@ export async function GET(request) {
   let errors = 0;
 
   for (const row of allPrefs || []) {
-    if (row.last_sent === dateStr) {
+    const dateStr = localDate(row.timezone);
+  const getStack = cacheFor(dateStr);
+  if (row.last_sent === dateStr) {
       skipped++;
       continue;
     }
@@ -60,5 +70,5 @@ export async function GET(request) {
     }
   }
 
-  return Response.json({ ok: true, sent, skipped, errors, date: dateStr });
+  return Response.json({ ok: true, sent, skipped, errors, at: new Date().toISOString() });
 }
