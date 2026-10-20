@@ -157,3 +157,26 @@ export async function signOut() {
   await supabase.auth.signOut();
   revalidatePath("/");
 }
+
+export async function getMySubstacks() {
+  const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return { error: "Please sign in again." };
+  const base = process.env.NEXT_PUBLIC_SITE_URL || "https://www.kostackt.com";
+  try {
+    const res = await fetch(`${base}/api/cron/sync?user=${user.id}&force=1`, {
+      headers: { authorization: `Bearer ${process.env.CRON_SECRET}` },
+      cache: "no-store",
+    });
+    const data = await res.json();
+    if (!res.ok) return { error: "Could not fetch your Substacks. Please try again." };
+    if (data.processed > 0) {
+      revalidatePath("/dashboard");
+      return { ok: `Sent ${data.processed} ${data.processed === 1 ? "post" : "posts"} to your Dropbox. Sync your Kobo to see them.` };
+    }
+    if (data.errorDetails?.length) return { error: `Could not fetch: ${data.errorDetails[0]}` };
+    return { error: "No posts found to send yet. Add a Substack above first." };
+  } catch (e) {
+    return { error: "Could not fetch your Substacks. Please try again." };
+  }
+}
