@@ -27,7 +27,7 @@ export default function UpgradeButton({ product, label }) {
 
   return (
     <button className="btn" type="button" onClick={handleClick} disabled={loading}>
-      {loading ? "Redirecting…" : label || "Upgrade — £4.99 one-off"}
+      {loading ? "Redirecting…" : label || "Go Unlimited, £12 a year"}
     </button>
   );
 }
