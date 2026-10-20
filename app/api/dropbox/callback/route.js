@@ -50,7 +50,7 @@ export async function GET(request) {
     refresh_token: tokenData.refresh_token,
     access_token: tokenData.access_token,
     access_token_expires_at: expiresAt,
-    sync_folder: "/Apps/Rakuten Kobo/Substack",
+    sync_folder: "/Apps/Rakuten Kobo/Stackt",
   });
 
   return NextResponse.redirect(`${origin}/dashboard?dropbox_connected=1`);
