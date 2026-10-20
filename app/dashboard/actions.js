@@ -172,10 +172,10 @@ export async function getMySubstacks() {
     if (!res.ok) return { error: "Could not fetch your Substacks. Please try again." };
     if (data.processed > 0) {
       revalidatePath("/dashboard");
-      return { ok: `Sent ${data.processed} ${data.processed === 1 ? "post" : "posts"} to your Dropbox. Sync your Kobo to see them.` };
+      return { ok: `Sent all Substacks from your chosen authors from the past 7 days (${data.processed} ${data.processed === 1 ? "post" : "posts"}). Sync your Kobo to see them.` };
     }
     if (data.errorDetails?.length) return { error: `Could not fetch: ${data.errorDetails[0]}` };
-    return { error: "No posts found to send yet. Add a Substack above first." };
+    return { error: "No posts from your chosen authors in the past 7 days. Add a Substack above if you have not yet." };
   } catch (e) {
     return { error: "Could not fetch your Substacks. Please try again." };
   }
