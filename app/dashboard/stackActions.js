@@ -20,6 +20,15 @@ export async function saveStackPrefs(prevState, formData) {
   const diff = formData.get("sudoku_difficulty");
   row.sudoku_difficulty = DIFFICULTIES.includes(diff) ? diff : "ramp";
   row.digest = formData.get("digest") === "on";
+  const tz = formData.get("timezone");
+  if (typeof tz === "string" && tz) {
+    try {
+      new Intl.DateTimeFormat("en", { timeZone: tz });
+      row.timezone = tz;
+    } catch (e) {
+      // ignore an unknown time zone and keep the previous one
+    }
+  }
 
   const chosen = STACKS.filter((s) => row[s.key]).map((s) => s.key);
   const ent = await getEntitlements(supabase, user.id);
