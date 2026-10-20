@@ -38,6 +38,7 @@ export async function GET(request) {
   let processed = 0;
   let skipped = 0;
   let errors = 0;
+const errorDetails = [];
 
   for (const connection of connections) {
     const { data: substacks } = await supabase
@@ -52,7 +53,8 @@ export async function GET(request) {
       accessToken = await getValidAccessToken(connection, supabase);
     } catch (err) {
       console.error(`Token refresh failed for user ${connection.user_id}:`, err);
-      errors++;
+errorDetails.push(`token: ${String(err?.message || err).slice(0, 200)}`);
+errors++;
       continue;
     }
 
@@ -62,20 +64,21 @@ export async function GET(request) {
         items = await fetchFeed(substack.url);
       } catch (err) {
         console.error(`Feed fetch failed for ${substack.url}:`, err);
-        errors++;
+errorDetails.push(`feed ${substack.url}: ${String(err?.message || err).slice(0, 200)}`);
+errors++;
         continue;
       }
 
-   const lastChecked = substack.last_checked_at
-  ? new Date(substack.last_checked_at)
-  : new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+   const weekAgo = Date.now() - 7 * 24 * 60 * 60 * 1000;
+const lastChecked = new Date(Math.max(substack.last_checked_at ? new Date(substack.last_checked_at).getTime() : 0, weekAgo));
 
-      const newItems = items.filter((item) => item.pubDate > lastChecked);
+      const newItems = items.filter((item) => item.pubDate > lastChecked).sort((a, b) => b.pubDate - a.pubDate).slice(0, 3);
 
       if (!newItems.length) {
-        skipped++;
-        continue;
-      }
+skipped++;
+await supabase.from("substacks").update({ last_checked_at: new Date().toISOString() }).eq("id", substack.id);
+continue;
+}
 
       for (const item of newItems) {
         try {
@@ -94,7 +97,8 @@ const folder = connection.sync_folder || "/Apps/Rakuten Kobo/Substack";
           processed++;
         } catch (err) {
           console.error(`Failed to process "${item.title}":`, err);
-          errors++;
+errorDetails.push(`item ${String(item.title).slice(0, 60)}: ${String(err?.message || err).slice(0, 200)}`);
+errors++;
         }
       }
 
@@ -110,6 +114,7 @@ const folder = connection.sync_folder || "/Apps/Rakuten Kobo/Substack";
     processed,
     skipped,
     errors,
-    timestamp: new Date().toISOString(),
+errorDetails,
+timestamp: new Date().toISOString(),
   });
 }
