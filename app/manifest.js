@@ -3,7 +3,7 @@ export default function manifest() {
     name: "Stackt",
     short_name: "Stackt",
     description: "Your Substacks and daily reads, delivered to your Kobo.",
-    start_url: "/dashboard",
+    start_url: "/library",
     scope: "/",
     display: "standalone",
     background_color: "#17302a",
