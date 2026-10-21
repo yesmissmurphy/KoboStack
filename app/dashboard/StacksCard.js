@@ -99,7 +99,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
   const GROUPS = [
     ["Reading", ["wikipedia", "onthisday", "news", "film", "word", "poem", "stoic", "fact"]],
     ["Everyday extras", ["recipe", "nature", "walk", "journal", "mushroom"]],
-    ["Puzzles", ["sudoku"]],
+    ["Puzzles", ["sudoku", "crossword", "kidscrossword"]],
   ];
   const GROUP_BLURBS = {
 Reading: "Something to read with your morning cup of tea.",
