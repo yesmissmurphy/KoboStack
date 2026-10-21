@@ -20,21 +20,23 @@ export default function PrintablesCard({ items, groups }) {
   const href = (key) => `/api/printable?key=${key}${fresh[key] ? `&fresh=${fresh[key]}` : ""}`;
 
   return (
-    <div className="card" style={{ marginBottom: 24 }}>
-      <div className="field-label" style={{ marginBottom: 12 }}>Printables</div>
-      <h2 style={{ marginBottom: 6 }}>Pencil, paper or stylus</h2>
+    <>
+<div className="card">
+<div className="field-label" style={{ marginBottom: 12 }}>Printables</div>
+<h2 style={{ fontSize: 38, marginBottom: 6 }}>Pencil, paper or stylus</h2>
       <p style={{ marginTop: 0 }}>
         Puzzles, colouring and pages to write on. Open one to print it, or send it to your Kobo or inbox and use a stylus.
       </p>
       <p className="stack-fineprint" style={{ marginTop: 0 }}>
         We call them printables, but we do care about the planet. If you can, use a screen and a stylus instead of paper.
       </p>
-      {groups.map(([gk, title]) => {
+</div>
+{groups.map(([gk, title]) => {
         const list = items.filter((p) => p.audience === gk);
         if (!list.length) return null;
         return (
-          <div key={gk} style={{ marginBottom: 14 }}>
-            <div className="field-label" style={{ margin: "16px 0 10px" }}>{title}</div>
+          <div key={gk} className="card">
+<h2 style={{ fontSize: 32, margin: "0 0 12px" }}>{title}</h2>
             <div className="stack-tiles">
               {list.map((p) => (
                 <div key={p.key} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 6, padding: "16px 16px 14px", minHeight: 190, borderRadius: 14, border: "1.5px solid rgba(150,110,35,0.5)", background: "rgba(255,252,244,0.7)", boxShadow: "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)" }}>
@@ -57,6 +59,6 @@ export default function PrintablesCard({ items, groups }) {
           </div>
         );
       })}
-    </div>
-  );
+</>
+);
 }
