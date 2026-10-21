@@ -32,16 +32,16 @@ export default function LoginPage() {
 
   return (
     <main className="shell">
-     <div className="eyebrow">Get your favourite Substacks delivered to your Kobo automatically</div>
+     <div className="eyebrow">Your favourite Substacks, on your Kobo, without lifting a finger</div>
 <h1>Sign in to Stackt</h1>
       <p className="lede">
-        We'll email you a one-time link. No password to remember, nothing to lose.
+        We'll email you a link to sign in. No password, so there is nothing to forget.
       </p>
 
       <div className="card">
         {status === "sent" ? (
           <p style={{ margin: 0 }}>
-            Check <strong>{email}</strong> for a sign-in link. You can close this tab.
+            Check <strong>{email}</strong> for your link. It might be in junk, it often is. You can close this tab.
           </p>
         ) : (
           <form onSubmit={handleSubmit}>
@@ -58,7 +58,7 @@ export default function LoginPage() {
             />
             <div style={{ marginTop: 18 }}>
               <button className="btn" type="submit" disabled={status === "sending"}>
-                {status === "sending" ? "Sending…" : "Send sign-in link"}
+                {status === "sending" ? "Sending…" : "Send me a link"}
               </button>
             </div>
             {status === "error" && <p className="message error">{errorMsg}</p>}
@@ -67,11 +67,9 @@ export default function LoginPage() {
       </div>
         <section className="stack-teaser">
         <div className="eyebrow">Plus a cosy little corner</div>
-        <h2>Daily Stacks for your Kobo</h2>
+        <h2>Little extras for your morning</h2>
         <p>
-          Small rituals that land on your Kobo each morning, on top of your Substacks. Try any one free.
-          Free to use: up to 3 Substacks and one stack to try. Unlimited is £12 a year (under £1 a month) for more Substacks and every reading stack you like. Puzzle stacks, made for Kobos you can write
-          on, are a £1 add-on.
+          Poems, recipes, puzzles and a daily mushroom, turning up on your Kobo (or in your inbox if you read on an iPad or phone). Pick the ones you like and how often. Free gets you 3 Substacks and one stack to try. Unlimited is £12 a year for the lot, which is under £1 a month. Puzzle stacks, made for Kobos you can write on, are a £1 add-on.
         </p>
         <div className="stack-grid">
           {STACKS.map((s) => (
