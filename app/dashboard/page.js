@@ -52,7 +52,7 @@ export default async function DashboardPage() {
   return (
     <main className="shell" style={{ maxWidth: 1180 }}>
       <div className="top-bar">
-        <span className="mark">STACKT</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 22 }}><span className="mark">STACKT</span><a href="/library" style={{ color: "var(--paper)", textDecoration: "underline" }}>Library</a></div>
         <form action={signOut}>
           <button className="btn btn-ghost" type="submit" style={{ background: "transparent", color: "var(--paper)", borderColor: "var(--line)" }}>
             Sign out
