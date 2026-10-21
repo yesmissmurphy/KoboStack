@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import PixelIcon from "@/app/PixelIcon";
 import { sendPrintable } from "./printableActions";
 
 export default function PrintablesCard({ items, groups }) {
@@ -40,7 +41,7 @@ export default function PrintablesCard({ items, groups }) {
             <div className="stack-tiles">
               {list.map((p) => (
                 <div key={p.key} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 6, padding: "16px 16px 14px", minHeight: 190, borderRadius: 14, border: "1.5px solid rgba(150,110,35,0.5)", background: "rgba(255,252,244,0.7)", boxShadow: "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)" }}>
-                  <span style={{ fontSize: 34, lineHeight: 1 }}>{p.emoji}</span>
+                  <PixelIcon emoji={p.emoji} />
                   <strong style={{ fontSize: 17 }}>{p.label}</strong>
                   <span style={{ fontSize: 13, fontStyle: "italic", opacity: 0.8 }}>{p.tagline}</span>
                   <span style={{ fontSize: 13, opacity: 0.75, flex: 1 }}>{p.blurb}</span>
