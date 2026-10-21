@@ -1,6 +1,8 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 import { STACKS } from "@/lib/stacks/catalog";
+import PixelIcon from "@/app/PixelIcon";
+import ThemePicker from "@/app/ThemePicker";
 
 export const dynamic = "force-dynamic";
 export const metadata = { title: "Library | Stackt" };
@@ -42,7 +44,7 @@ export default async function LibraryPage({ searchParams }) {
   return (
     <main className="shell" style={{ maxWidth: 1180 }}>
       <div className="top-bar">
-        <span className="mark">STACKT</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 18 }}><span className="mark">STACKT</span><ThemePicker /></div>
         <a href="/dashboard" className="btn btn-ghost" style={{ background: "transparent", color: "var(--paper)", borderColor: "var(--line)" }}>
           Settings
         </a>
@@ -98,7 +100,7 @@ export default async function LibraryPage({ searchParams }) {
                     style={{ position: "absolute", top: 10, right: 10, width: 10, height: 10, borderRadius: 999, background: "#b5562f" }}
                   />
                 )}
-                <div style={{ fontSize: 38 }}>{emoji}</div>
+                <PixelIcon emoji={emoji} size={54} />
                 <div style={{ fontWeight: 700, lineHeight: 1.3 }}>{it.title}</div>
                 <div style={{ marginTop: "auto", fontSize: 13, opacity: 0.75 }}>
                   {label}
