@@ -1,6 +1,7 @@
 import { STACKT_FOLDER, SUBSTACKS_FOLDER } from "@/lib/dropbox";
 import { createClient } from "@supabase/supabase-js";
 import { fetchFeed } from "@/lib/rss";
+import { saveToLibrary } from "@/lib/library";
 import { createEpub } from "@/lib/epub";
 import { getValidAccessToken, uploadToDropbox, deleteOldFiles } from "@/lib/dropbox";
 
@@ -99,6 +100,7 @@ const filename = `${sanitizeFilename(item.author)} - ${sanitizeFilename(item.tit
 const folder = SUBSTACKS_FOLDER;
           
           await uploadToDropbox(accessToken, folder, filename, epub, force);
+await saveToLibrary(supabase, { userId: connection.user_id, kind: "substack", title: item.title, filename, buffer: epub, dateStr, source: substack.name });
           processed++;
         } catch (err) {
           console.error(`Failed to process "${item.title}":`, err);
