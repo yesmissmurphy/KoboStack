@@ -320,3 +320,30 @@ input[type="email"], input[type="url"], input[type="text"] { border-radius: 10px
   .stack-tiles label { padding: 12px !important; min-height: 0 !important; }
 }
 .catalog-url { word-break: normal; overflow-wrap: anywhere; font-size: 1.05rem; min-width: 0; }
+
+/* ---- Colour schemes ---- */
+html[data-theme="plum"] { --ink: #3a2342; --ink-deep: #2a1830; --paper: #f6e9e0; --paper-dim: #ebd8cc; --brass: #d08a5c; --rust: #a8476b; }
+html[data-theme="rain"] { --ink: #1d3b4f; --ink-deep: #132a3a; --paper: #f3eedd; --paper-dim: #e6dfc7; --brass: #d4a24c; --rust: #b5573f; }
+html[data-theme="lamp"] { --ink: #2b2330; --ink-deep: #1d1722; --paper: #f1e4d0; --paper-dim: #e4d3b8; --brass: #e0a458; --rust: #b4583a; }
+html[data-theme="ink"] { --ink: #1b1b1b; --ink-deep: #0f0f0f; --paper: #f2f1ec; --paper-dim: #e3e2dc; --brass: #a8a8a8; --rust: #4a4a4a; }
+html[data-theme] body { background-color: var(--ink); }
+html[data-theme="ink"] body { background-image: none; }
+
+.theme-picker { position: relative; }
+.theme-btn { font-family: var(--font-pixel), var(--font-body); font-size: 15px; padding: 6px 14px; border: 2px solid var(--brass); background: transparent; color: var(--paper); cursor: pointer; }
+.theme-menu { position: absolute; right: 0; top: calc(100% + 6px); z-index: 20; min-width: 190px; display: flex; flex-direction: column; gap: 4px; padding: 8px; background: var(--paper); border: 2px solid var(--brass); box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.35); }
+.theme-opt { display: flex; align-items: center; gap: 10px; padding: 7px 8px; background: transparent; border: 2px solid transparent; color: var(--text-on-paper); font-family: var(--font-pixel), var(--font-body); font-size: 16px; text-align: left; cursor: pointer; }
+.theme-opt:hover, .theme-opt.on { border-color: var(--rust); background: var(--paper-dim); }
+.theme-swatch { width: 26px; height: 16px; border: 2px solid #3a2a1c; image-rendering: pixelated; }
+
+/* ---- Pixel look: stepped corners, chunky borders, a pixel font for small labels ---- */
+.mark, .eyebrow, .field-label, .stack-badge, .btn { font-family: var(--font-pixel), var(--font-mono), monospace; }
+.btn { font-size: 1rem; letter-spacing: 0.02em; }
+.field-label, .eyebrow { font-size: 0.95rem; letter-spacing: 0.08em; }
+.stack-badge { font-size: 0.85rem; }
+.card, .catalog-entry, .stack-notice, .empty-state, .stack-tile, .stack-tiles > label, .stack-tiles > div { border-radius: 0 !important; border-width: 3px !important; border-style: solid; box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.28) !important; }
+.card { border-color: var(--brass); }
+.btn, input[type="email"], input[type="url"], input[type="text"], .stack-select { border-radius: 0 !important; border-width: 2px !important; }
+.btn { box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.3); }
+.btn:hover { transform: translate(1px, 1px); box-shadow: 2px 2px 0 rgba(0, 0, 0, 0.3); }
+.btn:active { transform: translate(3px, 3px); box-shadow: none; }
