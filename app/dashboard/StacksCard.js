@@ -1,5 +1,6 @@
 "use client";
 
+import PixelIcon from "@/app/PixelIcon";
 import { useState, useTransition } from "react";
 import { saveStackPrefs, sendStacksNow } from "./stackActions";
 import UpgradeButton from "./UpgradeButton";
@@ -140,7 +141,7 @@ const placed = new Set(GROUPS.flatMap((g) => g[1]));
               return (
                 <label key={s.key} style={{ display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 6, position: "relative", padding: "16px 16px 14px", minHeight: 190, borderRadius: 14, border: on ? "2px solid rgba(150,110,35,0.9)" : "1.5px solid rgba(150,110,35,0.5)", background: on ? "rgba(150,110,35,0.14)" : "rgba(255,252,244,0.7)", boxShadow: on ? "0 3px 0 rgba(150,110,35,0.45), 0 6px 14px rgba(60,40,10,0.16)" : "0 2px 0 rgba(150,110,35,0.25), 0 4px 10px rgba(60,40,10,0.08)", opacity: locked ? 0.6 : 1, cursor: "pointer" }}>
                   <input type="checkbox" checked={on} onChange={() => toggle(s)} style={{ position: "absolute", top: 12, right: 12 }} />
-                  <span style={{ fontSize: 34, lineHeight: 1 }}>{locked ? "🔒" : s.emoji}</span>
+                  <PixelIcon emoji={locked ? "🔒" : s.emoji} />
                   <strong style={{ fontSize: 17 }}>{s.label}</strong>
                   <span style={{ fontSize: 13, fontStyle: "italic", opacity: 0.8 }}>{s.tagline}</span>
                   <span style={{ fontSize: 13, opacity: 0.75, flex: 1 }}>{s.blurb}</span>
