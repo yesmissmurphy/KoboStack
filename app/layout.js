@@ -1,4 +1,4 @@
-import { Fraunces, DM_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Fraunces, DM_Sans, IBM_Plex_Mono, Pixelify_Sans } from "next/font/google";
 import "./globals.css";
 
 const fraunces = Fraunces({ subsets: ["latin"], variable: "--font-display", display: "swap" });
@@ -11,6 +11,8 @@ const plexMono = IBM_Plex_Mono({
   variable: "--font-mono",
   display: "swap",
 });
+
+const pixel = Pixelify_Sans({ subsets: ["latin"], variable: "--font-pixel", display: "swap" });
 
 export const metadata = {
   title: "Stackt — Substacks to Kobo",
@@ -31,9 +33,9 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${dmSans.variable} ${plexMono.variable}`}>
-      <body>
-        {children}
+    <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${dmSans.variable} ${plexMono.variable} ${pixel.variable}`}>
+      <body>$1<script dangerouslySetInnerHTML={{ __html: 'try{var p=document.cookie.split("stackt_theme=");if(p[1]){document.documentElement.setAttribute("data-theme",p[1].split(";")[0])}}catch(e){}' }} />
+{children}
         <script
           dangerouslySetInnerHTML={{
             __html:
