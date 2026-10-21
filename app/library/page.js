@@ -110,7 +110,7 @@ export default async function LibraryPage({ searchParams }) {
           })}
         </div>
       ) : (
-        <div className="empty-state">
+        <div style={{ background: "#f4ecd8", color: "#17302a", border: "1px dashed #c4ad82", borderRadius: 12, padding: "20px 24px", maxWidth: 640, lineHeight: 1.6 }}>
           Nothing here yet. Your next delivery will turn up on this shelf as well as on your Kobo. Books are kept for 30 days.
         </div>
       )}
