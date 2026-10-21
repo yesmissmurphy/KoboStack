@@ -6,6 +6,7 @@ import UpgradeButton from "./UpgradeButton";
 import StacksCard from "./StacksCard";
 import GetSubstacksButton from "./GetSubstacksButton";
 import PrintablesCard from "./PrintablesCard";
+import ThemePicker from "@/app/ThemePicker";
 import { PRINTABLES, PRINTABLE_GROUPS } from "@/lib/printables/generators";
 import { STACKS, DEFAULT_PREFS } from "@/lib/stacks";
 
@@ -52,7 +53,7 @@ export default async function DashboardPage() {
   return (
     <main className="shell" style={{ maxWidth: 1180 }}>
       <div className="top-bar">
-        <div style={{ display: "flex", alignItems: "center", gap: 22 }}><span className="mark">STACKT</span><a href="/library" style={{ color: "var(--paper)", textDecoration: "underline" }}>Library</a></div>
+        <div style={{ display: "flex", alignItems: "center", gap: 22 }}><span className="mark">STACKT</span><a href="/library" style={{ color: "var(--paper)", textDecoration: "underline" }}>Library</a><ThemePicker /></div>
         <form action={signOut}>
           <button className="btn btn-ghost" type="submit" style={{ background: "transparent", color: "var(--paper)", borderColor: "var(--line)" }}>
             Sign out
