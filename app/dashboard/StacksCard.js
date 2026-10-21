@@ -111,12 +111,11 @@ export default function StacksCard({ stacks, prefs, ent }) {
       <div className="field-label" style={{ marginBottom: 12 }}>Daily Stacks</div>
       <h2 style={{ marginBottom: 6 }}>A cosy corner for your Kobo</h2>
       <p style={{ marginTop: 0 }}>
-        Little rituals that turn up with your morning. Switch on the ones you like and leave the rest.
+        Little things that turn up with your morning. Switch on the ones you like, pick how often, and ignore the rest.
       </p>
       {!allEntitled && (
         <p className="stack-fineprint" style={{ marginTop: 0 }}>
-          Try one stack free. Free to use: up to 3 Substacks and one stack to try. Unlimited is £12 a year (under £1 a month) for more Substacks and every stack you like. Puzzle stacks, made for
-          Kobos you can write on, are a £1 add-on.
+          Free gets you one stack to try. Unlimited is £12 a year (under £1 a month) and covers every reading stack. Puzzle stacks are a £1 add-on.
         </p>
       )}
 
