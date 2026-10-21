@@ -34,7 +34,8 @@ export const viewport = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning className={`${fraunces.variable} ${dmSans.variable} ${plexMono.variable} ${pixel.variable}`}>
-      <body>$1<script dangerouslySetInnerHTML={{ __html: 'try{var p=document.cookie.split("stackt_theme=");if(p[1]){document.documentElement.setAttribute("data-theme",p[1].split(";")[0])}}catch(e){}' }} />
+      <body>
+<script dangerouslySetInnerHTML={{ __html: 'try{var p=document.cookie.split("stackt_theme=");if(p[1]){document.documentElement.setAttribute("data-theme",p[1].split(";")[0])}}catch(e){}' }} />
 {children}
         <script
           dangerouslySetInnerHTML={{
