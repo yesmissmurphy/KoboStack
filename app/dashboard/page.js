@@ -69,9 +69,7 @@ export default async function DashboardPage() {
       <div style={{ background: "#f7f0e1", color: "#17302a", border: "1px dashed #c4ad82", borderRadius: 14, padding: "20px 24px", margin: "8px 0 28px", maxWidth: 760 }}>
         <div className="field-label" style={{ marginBottom: 8 }}>A note from Stephanie</div>
         <p style={{ margin: 0, lineHeight: 1.7 }}>
-          I’m Stephanie and I designed Stackt for those who are consciously aiming for a more analogue, slower life.
-          Sometimes you’re not in the mood for a book. Hopefully these stacks will keep you away from your phone for a
-          little while. I’m always open to suggestions for more stacks, please email <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>.
+          Hi, I'm Stephanie. I made Stackt because I wanted a slower, more analogue morning without giving up my screen. Some days you don't fancy a whole book, so there are small things instead: a poem, a recipe, a puzzle, a mushroom. If there is a stack you would like that is not here yet, tell me at <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>. I read everything.
         </p>
       </div>
 
@@ -79,11 +77,11 @@ export default async function DashboardPage() {
         <div className="card" style={{ display: isPro ? "none" : "block" }}>
           <div className="field-label" style={{ marginBottom: 12 }}>Plan</div>
           {isPro ? (
-            <p style={{ margin: 0 }}>✓ Unlimited. Thanks for supporting Stackt!</p>
+            <p style={{ margin: 0 }}>✓ Unlimited. Thank you for keeping Stackt going!</p>
           ) : (
             <div>
-              <p style={{ marginTop: 0 }}>Free plan: {substackCount} / 3 Substacks used, plus one stack to try.</p>
-              <p style={{ marginTop: 0 }}>Want more? <strong>Unlimited is £12 a year</strong> (under £1 a month) for as many Substacks and stacks as you like. Stackt is a small business run by one person, so it really does help.</p>
+              <p style={{ marginTop: 0 }}>You are on the free plan: {substackCount} of 3 Substacks used, plus one stack to try.</p>
+              <p style={{ marginTop: 0 }}>Want more? <strong>Unlimited is £12 a year</strong> (under £1 a month) for as many Substacks and stacks as you like. Stackt is made by one person, so it genuinely helps.</p>
               <UpgradeButton />
             </div>
           )}
@@ -106,7 +104,7 @@ export default async function DashboardPage() {
             </div>
           ) : (
             <div>
-              <p style={{ marginTop: 0 }}>Not connected yet.</p>
+              <p style={{ marginTop: 0 }}>Not connected yet. Connect Dropbox and your reading will turn up on your Kobo.</p>
               <a className="btn" href={dropboxAuthUrl}>Connect Dropbox</a>
             </div>
           )}
@@ -118,7 +116,7 @@ export default async function DashboardPage() {
           <div className="field-label" style={{ marginBottom: 12 }}>Substacks</div>
           <h2 style={{ marginBottom: 6 }}>Your little shelf of reading</h2>
           <p style={{ marginTop: 0 }}>
-            Add the writers you love. New posts are turned into books and sent to your Kobo daily, automatically.
+            Add the writers you love. Their new posts get turned into books and sent to your Kobo each day.
           </p>
 
           <AddForm />
@@ -139,7 +137,7 @@ export default async function DashboardPage() {
               ))}
             </ul>
           ) : (
-            <div className="empty-state">Your shelf is empty. Add a Substack URL above to get started.</div>
+            <div className="empty-state">Nothing on your shelf yet. Paste a Substack link above to get started.</div>
           )}
 
           <GetSubstacksButton />
