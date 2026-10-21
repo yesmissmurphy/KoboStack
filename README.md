@@ -47,3 +47,5 @@ the list.
 
 Once this is confirmed working end to end, tell me and we'll move to
 Stage 2: connecting Dropbox.
+
+Printables and PWA release.
