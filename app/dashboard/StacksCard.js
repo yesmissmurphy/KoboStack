@@ -101,15 +101,21 @@ export default function StacksCard({ stacks, prefs, ent }) {
     ["Everyday extras", ["recipe", "nature", "walk", "journal", "mushroom"]],
     ["Puzzles", ["sudoku"]],
   ];
-  const placed = new Set(GROUPS.flatMap((g) => g[1]));
+  const GROUP_BLURBS = {
+Reading: "Something to read with your morning cup of tea.",
+"Everyday extras": "Small bits of the day: what to cook, what to notice, a walk to take and a page to write on.",
+Puzzles: "Made for a Kobo or iPad you can write on.",
+};
+const placed = new Set(GROUPS.flatMap((g) => g[1]));
   const leftover = stacks.filter((s) => !placed.has(s.key)).map((s) => s.key);
   const groups = GROUPS.map((g) => [g[0], g[1].map((k) => stacks.find((s) => s.key === k)).filter(Boolean)]);
   if (leftover.length) groups.push(["More", leftover.map((k) => stacks.find((s) => s.key === k))]);
 
   return (
-    <div className="card" style={{ marginBottom: 24 }}>
-      <div className="field-label" style={{ marginBottom: 12 }}>Daily Stacks</div>
-      <h2 style={{ marginBottom: 6 }}>A cosy corner for your Kobo</h2>
+    <>
+<div className="card">
+<div className="field-label" style={{ marginBottom: 12 }}>Daily Stacks</div>
+<h2 style={{ fontSize: 38, marginBottom: 6 }}>A cosy corner for your Kobo</h2>
       <p style={{ marginTop: 0 }}>
         Little things that turn up with your morning. Switch on the ones you like, pick how often, and ignore the rest.
       </p>
@@ -119,11 +125,12 @@ export default function StacksCard({ stacks, prefs, ent }) {
         </p>
       )}
 
-      <div>
-        <div style={{ textAlign: "right", marginTop: 6 }}><button type="button" className="btn btn-ghost" onClick={toggleAll}>{stacks.every((s) => selected[s.key]) ? "Clear all" : "Select all"}</button></div>
-        {groups.filter((g) => g[1].length).map((g) => (
-          <div key={g[0]} style={{ marginBottom: 14 }}>
-            <div className="field-label" style={{ margin: "16px 0 10px" }}>{g[0]}</div>
+      <div style={{ textAlign: "right", marginTop: 6 }}><button type="button" className="btn btn-ghost" onClick={toggleAll}>{stacks.every((s) => selected[s.key]) ? "Clear all" : "Select all"}</button></div>
+</div>
+{groups.filter((g) => g[1].length).map((g) => (
+          <div key={g[0]} className="card">
+<h2 style={{ fontSize: 32, margin: "0 0 6px" }}>{g[0]}</h2>
+<p style={{ marginTop: 0 }}>{GROUP_BLURBS[g[0]]}</p>
             <div className="stack-tiles">
             {g[1].map((s) => {
               const on = !!selected[s.key];
@@ -148,11 +155,23 @@ export default function StacksCard({ stacks, prefs, ent }) {
               );
             })}
             </div>
-          </div>
-        ))}
-      </div>
-
-      {blocked && (
+{g[0] === "Puzzles" && selected.sudoku && (
+        <div className="stack-toggle">
+          <span>
+            Sudoku difficulty
+            <select className="stack-select" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
+              <option value="ramp">Gets harder through the week</option>
+              <option value="easy">Easy</option>
+              <option value="medium">Medium</option>
+              <option value="hard">Hard</option>
+            </select>
+          </span>
+        </div>
+      )}
+</div>
+))}
+<div className="card">
+{blocked && (
         <div className="stack-notice">
           {blocked === "puzzle" ? (
             <>
@@ -174,19 +193,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
         </div>
       )}
 
-      {selected.sudoku && (
-        <div className="stack-toggle">
-          <span>
-            Sudoku difficulty
-            <select className="stack-select" value={difficulty} onChange={(e) => setDifficulty(e.target.value)}>
-              <option value="ramp">Gets harder through the week</option>
-              <option value="easy">Easy</option>
-              <option value="medium">Medium</option>
-              <option value="hard">Hard</option>
-            </select>
-          </span>
-        </div>
-      )}
+      
 
       
 
@@ -207,6 +214,7 @@ export default function StacksCard({ stacks, prefs, ent }) {
       </div>
       {message?.ok && <p className="stack-msg">{message.ok}</p>}
       {message?.error && <p className="stack-msg error">{message.error}</p>}
-    </div>
-  );
+</div>
+</>
+);
 }
