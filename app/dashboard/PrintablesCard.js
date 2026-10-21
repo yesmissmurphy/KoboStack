@@ -24,12 +24,10 @@ export default function PrintablesCard({ items, groups }) {
       <div className="field-label" style={{ marginBottom: 12 }}>Printables</div>
       <h2 style={{ marginBottom: 6 }}>Pencil, paper or stylus</h2>
       <p style={{ marginTop: 0 }}>
-        Puzzles, colouring and pages to write on. Open one to print it, or send it to your Kobo folder or your inbox
-        and write on it with a stylus.
+        Puzzles, colouring and pages to write on. Open one to print it, or send it to your Kobo or inbox and use a stylus.
       </p>
       <p className="stack-fineprint" style={{ marginTop: 0 }}>
-        Whilst we say printable, we do care a lot about the planet, so please use a digital format and a stylus where
-        you can.
+        We call them printables, but we do care about the planet. If you can, use a screen and a stylus instead of paper.
       </p>
       {groups.map(([gk, title]) => {
         const list = items.filter((p) => p.audience === gk);
