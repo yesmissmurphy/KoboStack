@@ -68,9 +68,9 @@ export default async function DashboardPage() {
       </div>
 
       <div style={{ background: "#f7f0e1", color: "#17302a", border: "1px dashed #c4ad82", borderRadius: 14, padding: "20px 24px", margin: "8px 0 28px", maxWidth: 760 }}>
-        <div className="field-label" style={{ marginBottom: 8 }}>A note from Stephanie</div>
+        <div className="field-label" style={{ marginBottom: 8 }}>About Stackt</div>
         <p style={{ margin: 0, lineHeight: 1.7 }}>
-          Hi, I'm Stephanie. I made Stackt because I wanted a slower, more analogue morning without giving up my screen. Some days you don't fancy a whole book, so there are small things instead: a poem, a recipe, a puzzle, a mushroom. If there is a stack you would like that is not here yet, tell me at <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>. I read everything.
+          Stackt was made because I wanted a slower, more analogue morning without giving up my screen. Some days you don't fancy a whole book, so there are small things instead: a poem, a recipe, a puzzle, a mushroom. If there is a stack you would like that is not here yet, tell me at <a href="mailto:hello@kostackt.com">hello@kostackt.com</a>.
         </p>
       </div>
 
