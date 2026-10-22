@@ -3,11 +3,14 @@
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { STACKS } from "@/lib/stacks/catalog";
+import PixelIcon from "@/app/PixelIcon";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState("idle");
   const [errorMsg, setErrorMsg] = useState("");
+  const [picked, setPicked] = useState({});
+  const flip = (k) => setPicked((p) => ({ ...p, [k]: !p[k] }));
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -69,12 +72,13 @@ export default function LoginPage() {
         <div className="eyebrow">Plus a cosy little corner</div>
         <h2>Little extras for your morning</h2>
         <p>
-          Poems, recipes, puzzles and a daily mushroom, turning up on your Kobo (or in your inbox if you read on an iPad or phone). Pick the ones you like and how often. Free gets you 3 Substacks and one stack to try. Unlimited is £12 a year for the lot, which is under £1 a month. Puzzle stacks, made for Kobos you can write on, are a £1 add-on.
+          Little optional add-ons: pick as many or as few as you like, and switch them up whenever. I've made it simple to pick the frequency too, so you're never overloaded. Unlimited is £12 a year (£1 a month) and covers every reading stack. Puzzle stacks are a £1 add-on.
         </p>
         <div className="stack-grid">
           {STACKS.map((s) => (
-            <div key={s.key} className="stack-tile static">
-              <span className="stack-emoji">{s.emoji}</span>
+            <div key={s.key} className={"stack-tile static" + (picked[s.key] ? " on" : "")} role="checkbox" aria-checked={!!picked[s.key]} tabIndex={0} onClick={() => flip(s.key)} onKeyDown={(e) => { if (e.key === " " || e.key === "Enter") { e.preventDefault(); flip(s.key); } }} style={{ cursor: "pointer", borderColor: picked[s.key] ? "var(--brass)" : undefined }}>
+<span aria-hidden="true" style={{ position: "absolute", top: 12, right: 12, width: 22, height: 22, display: "flex", alignItems: "center", justifyContent: "center", border: "2px solid var(--brass)", background: picked[s.key] ? "var(--brass)" : "rgba(239, 229, 204, 0.1)", color: "#17302a", fontSize: 16, lineHeight: 1, fontWeight: 700 }}>{picked[s.key] ? "\u2713" : ""}</span>
+              <PixelIcon emoji={s.emoji} />
               <span className="stack-name">{s.label}</span>
               <span className="stack-tagline">{s.tagline}</span>
               <span className="stack-blurb">{s.blurb}</span>
